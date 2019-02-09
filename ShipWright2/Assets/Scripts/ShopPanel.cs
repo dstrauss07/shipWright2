@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ShopPanel : MonoBehaviour
 
@@ -103,21 +104,25 @@ public class ShopPanel : MonoBehaviour
     public void AddToGameItems0()
     {
         gameStatus.AddToGameItems(items[0 + ((page - 1) * 4)]);
+        SceneManager.LoadScene("Inventory");
     }
 
     public void AddToGameItems1()
     {
         gameStatus.AddToGameItems(items[1 + ((page - 1) * 4)]);
+        SceneManager.LoadScene("Inventory");
     }
 
     public void AddToGameItems2()
     {
         gameStatus.AddToGameItems(items[2 + ((page - 1) * 4)]);
+        SceneManager.LoadScene("Inventory");
     }
 
     public void AddToGameItems3()
     {
         gameStatus.AddToGameItems(items[3 + ((page - 1) * 4)]);
+        SceneManager.LoadScene("Inventory");
     }
 
 }

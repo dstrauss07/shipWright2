@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InventoryPanel : MonoBehaviour
 {
 
     GameStatus gameStatus;
+    
 
     [SerializeField] List<Item> inventoryItems;
     [SerializeField] List<TextMeshProUGUI> MenuItemNames;
@@ -106,4 +108,34 @@ public class InventoryPanel : MonoBehaviour
             GameObject.Find("Next Page").GetComponent<Button>().enabled = true;
         }
     }
+
+
+    public void SetGameItem0()
+    {
+        gameStatus.SetGameItemToSet(inventoryItems[0 + ((page - 1) * 4)]);
+        SceneManager.LoadScene("PlayScreen");
+        gameStatus.setModeActive = true;
+    }
+
+    public void SetGameItem1()
+    {
+        gameStatus.SetGameItemToSet(inventoryItems[1 + ((page - 1) * 4)]);
+        SceneManager.LoadScene("PlayScreen");
+        gameStatus.setModeActive = true;
+    }
+
+    public void SetGameItem2()
+    {
+        gameStatus.SetGameItemToSet(inventoryItems[2 + ((page - 1) * 4)]);
+        SceneManager.LoadScene("PlayScreen");
+        gameStatus.setModeActive = true;
+    }
+
+    public void SetGameItem3()
+    {
+        gameStatus.SetGameItemToSet(inventoryItems[3 + ((page - 1) * 4)]);
+        SceneManager.LoadScene("PlayScreen");
+        gameStatus.setModeActive = true;
+    }
+
 }

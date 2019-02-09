@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class GameStatus : MonoBehaviour
 {
-   [SerializeField] List<Item> gameItems;
+   [SerializeField] List<Item> gameItems;  //for Debugging
+    [SerializeField] Item itemToSet;
+    [SerializeField] Item setItem1;
+   public bool setModeActive = false;
 
 
     private void Awake()
@@ -36,6 +39,28 @@ public class GameStatus : MonoBehaviour
     {
         return gameItems;
     }
+
+    public void SetGameItemToSet(Item item)
+    {
+        itemToSet = item;
+    }
+
+    public Item getItemToSet()
+    {
+        return itemToSet;
+    }
+
+
+    public void SetItem1(Item item)
+    {
+        setItem1 = item;
+    }
+
+    public Item getSetItem1()
+    {
+        return setItem1;
+    }
+
 
 
 }

@@ -423,6 +423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameItems: []
+  itemToSet: {fileID: 0}
 --- !u!4 &1673815494
 Transform:
   m_ObjectHideFlags: 0
@@ -1232,8 +1233,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: AddToGameItems2
+      - m_Target: {fileID: 7680766391892261017}
+        m_MethodName: SetGameItem2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1446,8 +1447,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: AddToGameItems3
+      - m_Target: {fileID: 7680766391892261017}
+        m_MethodName: SetGameItem3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1734,8 +1735,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: AddToGameItems1
+      - m_Target: {fileID: 7680766391892261017}
+        m_MethodName: SetGameItem1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3181,8 +3182,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: AddToGameItems0
+      - m_Target: {fileID: 7680766391892261017}
+        m_MethodName: SetGameItem0
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
