@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7840019178069206589}
   - component: {fileID: 360018458549096685}
-  - component: {fileID: 7606251418723115379}
+  - component: {fileID: 4173956333762244946}
   m_Layer: 0
-  m_Name: 8 Ball
+  m_Name: Bear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 6348ab0c89bbb0c4dbf8b50c5b1b16b5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1a661bc3a4a136c4a94d9cef644c5f34, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7606251418723115379
+--- !u!114 &4173956333762244946
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,11 +89,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4501609284822704363}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fbf040794b9ed54cbb57ef2f6168c53, type: 3}
+  m_Script: {fileID: 11500000, guid: d83e8975e18f86642b73edbb12510c9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemName: 8 Ball
-  ItemCost: 5
-  attractedCharacter1: {fileID: 4173956333762244946, guid: cbe24d1fddc9cd547ae4023e70bfe86a,
+  itemAttractor1: {fileID: 7606251418723115379, guid: c5b870cf5749def40b0ca43b7c059fb3,
     type: 3}
-  characterIsInGameScreen: 1
+  itemAttractor2: {fileID: 7606251418723115379, guid: 8117d5f926da8d24180137b8e0e4859d,
+    type: 3}
+  itemAttractor3: {fileID: 7606251418723115379, guid: 7530416cd153cb141b59725b7c9f027a,
+    type: 3}

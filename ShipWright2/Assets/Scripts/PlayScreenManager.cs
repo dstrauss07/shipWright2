@@ -12,13 +12,35 @@ public class PlayScreenManager: MonoBehaviour
     GameObject setButtonText;
     Transform setButtonLocation;
     Item setGameItem;
+    [SerializeField] float characterWaitTime = 5f;
 
-    
 
     // Start is called before the first frame update
     void Start()
     {
         gameStatus = FindObjectOfType<GameStatus>();
+        SetButton1();
+
+
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        if (setGameItem.characterIsInGameScreen)
+        {
+            characterWaitTime -= Time.deltaTime;
+            if (characterWaitTime <= 0)
+            {
+                Debug.Log("Character has Appeared");
+                Character setCharacter = Instantiate(setGameItem.GetAttractedCharacter1(), transform.position, Quaternion.identity) as Character;
+                characterWaitTime = 5000f;
+            }
+        }
+
+    }
+
+    private void SetButton1()
+    {
         setButton = GameObject.Find("SetButton");
         setButtonText = GameObject.Find("SetButtonText");
         setButtonLocation = setButton.transform;
@@ -34,6 +56,7 @@ public class PlayScreenManager: MonoBehaviour
         {
             setGameItem = Instantiate(gameStatus.getSetItem1(), setButtonLocation);
             setGameItem.transform.localScale += new Vector3(100f, 100f, 0);
+            setGameItem.characterIsInGameScreen = true;
         }
 
         if (gameStatus.getSetItem1() != null && gameStatus.setModeActive)
@@ -43,24 +66,15 @@ public class PlayScreenManager: MonoBehaviour
             Color currentImage = setGameItem.GetComponent<SpriteRenderer>().color;
             currentImage.a = 0.15f;
             setGameItem.GetComponent<SpriteRenderer>().color = currentImage;
+            setGameItem.characterIsInGameScreen = false;
         }
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-
     }
 
 
     public void setItemHere()
     {
-        //Debug.Log("item has been set");
         setGameItem = Instantiate(gameStatus.getItemToSet(), setButtonLocation);
         setGameItem.transform.localScale += new Vector3(100f, 100f, 0);
-        //   HideSetArea();
         gameStatus.setModeActive = false;
         gameStatus.SetItem1(gameStatus.getItemToSet());
         SceneManager.LoadScene("PlayScreen");

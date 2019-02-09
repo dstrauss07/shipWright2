@@ -5,14 +5,20 @@ using UnityEngine;
 public class GameStatus : MonoBehaviour
 {
    [SerializeField] List<Item> gameItems;  //for Debugging
-    [SerializeField] Item itemToSet;
-    [SerializeField] Item setItem1;
+   [SerializeField] Item itemToSet;
+   [SerializeField] Item setItem1;
    public bool setModeActive = false;
+   Character attractedCharacter1;
 
 
     private void Awake()
     {
         SetUpSingleton();
+    }
+
+    private void Start()
+    {
+        attractedCharacter1 = setItem1.GetAttractedCharacter1();
     }
 
     private void SetUpSingleton()
@@ -59,6 +65,11 @@ public class GameStatus : MonoBehaviour
     public Item getSetItem1()
     {
         return setItem1;
+    }
+
+    public Character GetAttractedCharacter1()
+    {
+        return attractedCharacter1;
     }
 
 
