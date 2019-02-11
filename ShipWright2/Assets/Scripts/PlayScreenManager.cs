@@ -33,6 +33,10 @@ public class PlayScreenManager: MonoBehaviour
             {
                 Debug.Log("Character has Appeared");
                 Character setCharacter = Instantiate(setGameItem.GetAttractedCharacter1(), transform.position, Quaternion.identity) as Character;
+
+                gameStatus.AddToVisitedCharacters(setGameItem.GetAttractedCharacter1());
+
+
                 characterWaitTime = 5000f;
             }
         }

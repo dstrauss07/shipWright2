@@ -5,16 +5,31 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
 
+    [SerializeField] List<Item> ItemsAttractedBy;
+    [SerializeField] int NumberOfTimesVisited = 0;
 
-    // Start is called before the first frame update
-    void Start()
+
+    public void AddToItemsAttractedBy(Item itemAttractedBy)
     {
-        
+        if(!ItemsAttractedBy.Contains(itemAttractedBy))
+        {
+            ItemsAttractedBy.Add(itemAttractedBy);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public List<Item> ReturnItemsAttractedBy()
     {
-        
+        return ItemsAttractedBy;
     }
+
+    public void AddToVisits()
+    {
+        NumberOfTimesVisited++;
+    }
+    
+    public int ReturnNumberOfVisits()
+    {
+        return NumberOfTimesVisited;
+    }
+
 }

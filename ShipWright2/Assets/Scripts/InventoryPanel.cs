@@ -15,7 +15,7 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] List<TextMeshProUGUI> MenuItemNames;
     [SerializeField] List<GameObject> MenuItemImages;
     [SerializeField] TextMeshProUGUI pageText;
-
+    [SerializeField] List<GameObject> menuItems;
 
     int page = 1;
 
@@ -24,14 +24,9 @@ public class InventoryPanel : MonoBehaviour
     {
         gameStatus = FindObjectOfType<GameStatus>();
         inventoryItems = gameStatus.ListGameItems();
-        if (inventoryItems.Count > 0)
+        if (inventoryItems.Count == 0)
         {
-            TogglePageButtons();
-            PopulateItemList();
-        }
-        else
-        {
-            GameObject.Find("InventoryPanel").SetActive(false);
+           GameObject.Find("InventoryPanel").SetActive(false);
         }
     }
 
@@ -39,21 +34,90 @@ public class InventoryPanel : MonoBehaviour
     void Update()
     {
        pageText.text = "Page " + page.ToString() + " Of " + GetPageCount().ToString();
-
+        TogglePageButtons();
+        removeUnnecessaryItemSpots();
+        PopulateItemList();
 
     }
 
-    private void PopulateItemList()
+
+     private void PopulateItemList()
     {
-        for (int itemNum = 0; itemNum < 4; itemNum++)
+        if (GetPageCount() == 1)
         {
-            var currentItem = inventoryItems[itemNum + ((page - 1) * 4)];
-            string currentItemName = currentItem.ItemName;
-            string currentItemCost = currentItem.ItemCost.ToString();
-            var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
-            MenuItemNames[itemNum].text = currentItemName;
-            MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
+            for (int itemNum = 0; itemNum < itemsListLength(); itemNum++ )
+            {
+                var currentItem = inventoryItems[itemNum];
+                string currentItemName = currentItem.ItemName;
+                var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
+                MenuItemNames[itemNum].text = currentItemName;
+                MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
+            }
+
+
         }
+        else if (page != GetPageCount() && GetPageCount() != 1)
+        {
+            for (int itemNum = 0; itemNum < 4; itemNum++)
+            {
+                var currentItem = inventoryItems[itemNum + ((page - 1) * 4)];
+                string currentItemName = currentItem.ItemName;
+                var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
+                MenuItemNames[itemNum].text = currentItemName;
+                MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
+            }
+        }
+        else
+        {
+            for (int itemNum = 4 - itemListRemainder(); itemNum < 4; itemNum++)
+            {
+                int itemIndex = 0;
+                var currentItem = inventoryItems[itemIndex + ((page - 1) * 4)];
+                string currentItemName = currentItem.ItemName;
+                var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
+                MenuItemNames[itemIndex].text = currentItemName;
+                MenuItemImages[itemIndex].GetComponent<Image>().sprite = currentItemSprite;
+                itemIndex++;
+            }
+        }
+    }
+
+    private void removeUnnecessaryItemSpots()
+    {
+        if (page == GetPageCount() && itemListRemainder() != 0)
+
+        {
+            for (int itemNum = itemListRemainder(); itemNum < 4; itemNum++)
+            {
+                menuItems[itemNum].SetActive(false);
+            }
+        }
+        else
+        {
+            for (int itemNum = itemListRemainder(); itemNum < 4; itemNum++)
+            {
+                menuItems[itemNum].SetActive(true);
+            }
+        }
+    }
+
+
+    public int itemsListLength()
+    {
+        return inventoryItems.Count;
+    }
+
+    public int GetPageCount()
+    {
+        InventoryPanel inventoryPanel = GetComponent<InventoryPanel>();
+        int records = itemsListLength();
+        int pageCount = (records + 3) / 4;
+        return pageCount;
+    }
+
+    public int itemListRemainder()
+    {
+        return itemsListLength() % 4;
     }
 
 
@@ -68,20 +132,6 @@ public class InventoryPanel : MonoBehaviour
     {
         Debug.Log("Previus Page!");
         page--;
-    }
-
-
-    public int itemsListLength()
-    {
-        return inventoryItems.Count;
-    }
-
-    public int GetPageCount()
-    {
-        InventoryPanel inventoryPanel = GetComponent<InventoryPanel>();
-        int records = inventoryPanel.itemsListLength();
-        int pageCount = (records + 3) / 4;
-        return pageCount;
     }
 
     private void TogglePageButtons()

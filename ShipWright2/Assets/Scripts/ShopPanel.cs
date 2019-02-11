@@ -13,7 +13,9 @@ public class ShopPanel : MonoBehaviour
     [SerializeField] List<TextMeshProUGUI> MenuItemNames;
     [SerializeField] List<TextMeshProUGUI> MenuItemCosts;
     [SerializeField] List<GameObject> MenuItemImages;
+      [SerializeField] List<GameObject> menuItems;
     [SerializeField] TextMeshProUGUI pageText;
+  
 
     int page = 1;
     GameStatus gameStatus;
@@ -28,6 +30,7 @@ public class ShopPanel : MonoBehaviour
     public void Update()
     {
         TogglePageButtons();
+        removeUnnecessaryItemSpots();
 
         PopulateItemList();
 
@@ -38,35 +41,79 @@ public class ShopPanel : MonoBehaviour
 
     private void PopulateItemList()
     {
-        for (int itemNum = 0; itemNum < 4; itemNum++)
+
+        if (GetPageCount() == 1)
         {
-            var currentItem = items[itemNum + ((page - 1) * 4)];
-            string currentItemName = currentItem.ItemName;
-            string currentItemCost = currentItem.ItemCost.ToString();
-            var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
-            MenuItemNames[itemNum].text = currentItemName;
-            MenuItemCosts[itemNum].text = currentItemCost;
-            MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
+            for (int itemNum = 0; itemNum < itemsListLength(); itemNum++)
+            {
+                var currentItem = items[itemNum];
+                string currentItemName = currentItem.ItemName;
+                var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
+                MenuItemNames[itemNum].text = currentItemName;
+                MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
+            }
+        }
+
+        else if (page != GetPageCount())
+        {
+            for (int itemNum = 0; itemNum < 4; itemNum++)
+            {
+                var currentItem = items[itemNum + ((page - 1) * 4)];
+                string currentItemName = currentItem.ItemName;
+                string currentItemCost = currentItem.ItemCost.ToString();
+                var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
+                MenuItemNames[itemNum].text = currentItemName;
+                MenuItemCosts[itemNum].text = currentItemCost;
+                MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
+            }
+        }
+        else
+        {
+            for (int itemNum = 4 - itemListRemainder(); itemNum < 4; itemNum++)
+            {
+                int itemIndex = 0;
+                var currentItem = items[itemIndex + ((page - 1) * 4)];
+                string currentItemName = currentItem.ItemName;
+                string currentItemCost = currentItem.ItemCost.ToString();
+                var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
+                MenuItemNames[itemIndex].text = currentItemName;
+                MenuItemCosts[itemIndex].text = currentItemCost;
+                MenuItemImages[itemIndex].GetComponent<Image>().sprite = currentItemSprite;
+                itemIndex++;
+            }
         }
     }
 
-    public void NextPage()
+    private void removeUnnecessaryItemSpots()
     {
-        Debug.Log("Next Page!");
-        page++;
+        if (page == GetPageCount() && itemListRemainder() != 0)
+
+        {
+            for (int itemNum = itemListRemainder(); itemNum < 4; itemNum++)
+            {
+                menuItems[itemNum].SetActive(false);
+            }
+        }
+        else
+        {
+            for (int itemNum = itemListRemainder(); itemNum < 4; itemNum++)
+            {
+                menuItems[itemNum].SetActive(true);
+            }
+        }
     }
 
-
-    public void PreviousPage()
-    {
-        Debug.Log("Previus Page!");
-        page--;
-    }
 
     public int itemsListLength()
     {
         return items.Count;
     }
+
+    public int itemListRemainder()
+    {
+        return itemsListLength() % 4;
+    }
+
 
     public int GetPageCount()
     {
@@ -99,6 +146,20 @@ public class ShopPanel : MonoBehaviour
             GameObject.Find("Next Page").GetComponent<TextMeshProUGUI>().enabled = true;
             GameObject.Find("Next Page").GetComponent<Button>().enabled = true;
         }
+    }
+
+
+    public void NextPage()
+    {
+        Debug.Log("Next Page!");
+        page++;
+    }
+
+
+    public void PreviousPage()
+    {
+        Debug.Log("Previus Page!");
+        page--;
     }
 
     public void AddToGameItems0()
