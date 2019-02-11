@@ -5,8 +5,9 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
 
-    [SerializeField] List<Item> ItemsAttractedBy;
-    [SerializeField] int NumberOfTimesVisited = 0;
+    [SerializeField] public List<Item> ItemsAttractedBy;
+    [SerializeField] public int NumberOfTimesVisited = 0;
+    [SerializeField] public string characterName;
 
 
     public void AddToItemsAttractedBy(Item itemAttractedBy)

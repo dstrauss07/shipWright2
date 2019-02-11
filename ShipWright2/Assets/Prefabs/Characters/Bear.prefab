@@ -92,9 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d83e8975e18f86642b73edbb12510c9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemAttractor1: {fileID: 7606251418723115379, guid: c5b870cf5749def40b0ca43b7c059fb3,
-    type: 3}
-  itemAttractor2: {fileID: 7606251418723115379, guid: 8117d5f926da8d24180137b8e0e4859d,
-    type: 3}
-  itemAttractor3: {fileID: 7606251418723115379, guid: 7530416cd153cb141b59725b7c9f027a,
-    type: 3}
+  ItemsAttractedBy: []
+  NumberOfTimesVisited: 0
+  characterName: Honey Bear

@@ -26,20 +26,18 @@ public class InventoryPanel : MonoBehaviour
         inventoryItems = gameStatus.ListGameItems();
         if (inventoryItems.Count == 0)
         {
-           GameObject.Find("InventoryPanel").SetActive(false);
+            GameObject.Find("InventoryPanel").SetActive(false);
         }
+        PopulateMenu();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void PopulateMenu()
     {
-       pageText.text = "Page " + page.ToString() + " Of " + GetPageCount().ToString();
+        pageText.text = "Page " + page.ToString() + " Of " + GetPageCount().ToString();
         TogglePageButtons();
         removeUnnecessaryItemSpots();
         PopulateItemList();
-
     }
-
 
      private void PopulateItemList()
     {
@@ -109,7 +107,6 @@ public class InventoryPanel : MonoBehaviour
 
     public int GetPageCount()
     {
-        InventoryPanel inventoryPanel = GetComponent<InventoryPanel>();
         int records = itemsListLength();
         int pageCount = (records + 3) / 4;
         return pageCount;
@@ -125,6 +122,7 @@ public class InventoryPanel : MonoBehaviour
     {
         Debug.Log("Next Page!");
         page++;
+        PopulateMenu();
     }
 
 
@@ -132,6 +130,7 @@ public class InventoryPanel : MonoBehaviour
     {
         Debug.Log("Previus Page!");
         page--;
+        PopulateMenu();
     }
 
     private void TogglePageButtons()

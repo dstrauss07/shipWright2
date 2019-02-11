@@ -65,8 +65,13 @@ public class GameStatus : MonoBehaviour
 
     public void AddToVisitedCharacters (Character visitedCharacter)
     {
-        if(!visitingCharacters.Contains(visitedCharacter) )
-        visitingChracters.Add(visitedCharacter);
+        //if(!visitingCharacters.Contains(visitedCharacter) )
+        visitingCharacters.Add(visitedCharacter);
+    }
+
+    public List<Character> GetListVisitingCharacters()
+    {
+        return visitingCharacters;
     }
 
 

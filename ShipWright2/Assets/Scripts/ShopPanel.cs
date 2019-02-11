@@ -24,19 +24,17 @@ public class ShopPanel : MonoBehaviour
     {
 
         gameStatus = FindObjectOfType<GameStatus>();
+        PopulateMenu();
 
     }
 
-    public void Update()
+
+    private void PopulateMenu()
     {
         TogglePageButtons();
         removeUnnecessaryItemSpots();
-
         PopulateItemList();
-
-        pageText.text = page.ToString() + " Of " + GetPageCount().ToString() ;
-
-                
+        pageText.text = page.ToString() + " Of " + GetPageCount().ToString();
     }
 
     private void PopulateItemList()
@@ -117,8 +115,7 @@ public class ShopPanel : MonoBehaviour
 
     public int GetPageCount()
     {
-        ShopPanel shopPanel = GetComponent<ShopPanel>();
-        int records = shopPanel.itemsListLength();
+        int records = itemsListLength();
         int pageCount = (records + 3) / 4;
         return pageCount;
     }
@@ -153,6 +150,7 @@ public class ShopPanel : MonoBehaviour
     {
         Debug.Log("Next Page!");
         page++;
+        PopulateMenu();
     }
 
 
@@ -160,6 +158,7 @@ public class ShopPanel : MonoBehaviour
     {
         Debug.Log("Previus Page!");
         page--;
+        PopulateMenu();
     }
 
     public void AddToGameItems0()

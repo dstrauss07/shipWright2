@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 360018458549096685}
   - component: {fileID: 4173956333762244946}
   m_Layer: 0
-  m_Name: Dragon
+  m_Name: PuffGreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 4a71ce589bbe8a841898f9dc79e3c526, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7cd054aac8a6aaf4381ecb3b0e483823, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -94,4 +94,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemsAttractedBy: []
   NumberOfTimesVisited: 0
-  characterName: Draggin
+  characterName: GreenPuff

@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
 
-public class PlayScreenManager: MonoBehaviour
+public class PlayScreenManager : MonoBehaviour
 {
 
     GameStatus gameStatus;
@@ -14,33 +15,51 @@ public class PlayScreenManager: MonoBehaviour
     Item setGameItem;
     [SerializeField] float characterWaitTime = 5f;
 
+    Character characterToAdd;
+    List<Character> VisitedCharacters;
+
 
     // Start is called before the first frame update
     void Start()
     {
         gameStatus = FindObjectOfType<GameStatus>();
         SetButton1();
+        VisitedCharacters = gameStatus.GetListVisitingCharacters();
+
 
 
     }
     // Update is called once per frame
     void Update()
     {
-        if (setGameItem.characterIsInGameScreen)
+        if (setGameItem != null)
         {
-            characterWaitTime -= Time.deltaTime;
-            if (characterWaitTime <= 0)
+
+            if (setGameItem.characterIsInGameScreen)
             {
-                Debug.Log("Character has Appeared");
-                Character setCharacter = Instantiate(setGameItem.GetAttractedCharacter1(), transform.position, Quaternion.identity) as Character;
+                characterWaitTime -= Time.deltaTime;
+                if (characterWaitTime <= 0)
+                {
+                    
+                    //TODO replace instantiate with animations
+                    //Character setCharacter = Instantiate(setGameItem.GetAttractedCharacter1(), transform.position, Quaternion.identity) as Character;
+                    
+                    characterToAdd = setGameItem.GetAttractedCharacter1();
+                    if (!VisitedCharacters.Contains(characterToAdd))
+                    {
+                        Debug.Log("Character has Appeared");
+                        characterToAdd.AddToItemsAttractedBy(setGameItem);
+                        characterToAdd.AddToVisits();
+                        gameStatus.AddToVisitedCharacters(setGameItem.GetAttractedCharacter1());
+                        characterWaitTime = 5000f;
+                    }
 
-                gameStatus.AddToVisitedCharacters(setGameItem.GetAttractedCharacter1());
-
-
-                characterWaitTime = 5000f;
+                    //characterToAdd.AddToItemsAttractedBy(setGameItem);
+                    //gameStatus.AddToVisitedCharacters(setGameItem.GetAttractedCharacter1());
+                    //characterWaitTime = 5000f;
+                }
             }
         }
-
     }
 
     private void SetButton1()
