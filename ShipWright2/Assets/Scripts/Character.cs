@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
     public string CurrentItemAttractString;
     [SerializeField] public int NumberOfTimesVisited = 0;
     [SerializeField] public string characterName;
+    public List<string> ItemListNamesToReturn;
 
 
     public void AddToItemsAttractedBy(Item itemAttractedBy)
@@ -22,6 +23,17 @@ public class Character : MonoBehaviour
     public List<Item> ReturnItemsAttractedBy()
     {
         return ItemsAttractedBy;
+    }
+
+    public List<string> ReturnItemNames()
+    {
+        
+        for (int i=0; i < ItemsAttractedBy.Count; i++)
+        {
+            ItemListNamesToReturn.Add(ItemsAttractedBy[i].ItemName);
+        }
+        return ItemListNamesToReturn;
+
     }
 
     public string ReturnCurrentItemAttractString()

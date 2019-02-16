@@ -94,6 +94,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: Apple
   ItemCost: 10
-  attractedCharacter1: {fileID: 4173956333762244946, guid: 8addb3a8f311dfc43a21100a115ad009,
-    type: 3}
-  characterIsInGameScreen: 0
+  itemIsInGameScreen: 0
+  attractedCharacters:
+  - {fileID: 4173956333762244946, guid: 8addb3a8f311dfc43a21100a115ad009, type: 3}
+  - {fileID: 4173956333762244946, guid: 244434fc78ef310439b6338b0bda6bf9, type: 3}
+  - {fileID: 4173956333762244946, guid: 31de759c1edf477448f7f2d4f8b61fde, type: 3}
+  - {fileID: 4173956333762244946, guid: 860828cfdcab27246a4e2c2171beea2c, type: 3}
+  - {fileID: 4173956333762244946, guid: b805e486a95b4b24cae6fd34c39dda1c, type: 3}

@@ -93,5 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemsAttractedBy: []
+  CurrentItemAttractString: 
   NumberOfTimesVisited: 0
-  characterName: Missy
+  characterName: Girl
+  ItemListNamesToReturn: []

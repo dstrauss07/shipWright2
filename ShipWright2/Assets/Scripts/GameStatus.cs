@@ -23,8 +23,7 @@ public class GameStatus : MonoBehaviour
 
         if (numberGameSessions > 1)
         {
-            Debug.Log("destroyed game session");
-            Destroy(gameObject);
+             Destroy(gameObject);
         }
         else
         {
@@ -63,9 +62,8 @@ public class GameStatus : MonoBehaviour
         return setItem1;
     }
 
-    public void AddToVisitedCharacters (Character visitedCharacter)
+    public void AddToVisitedCharacters(Character visitedCharacter)
     {
-        //if(!visitingCharacters.Contains(visitedCharacter) )
         visitingCharacters.Add(visitedCharacter);
     }
 
@@ -81,9 +79,16 @@ public class GameStatus : MonoBehaviour
         visitingCharacterToUpdate.AddToItemsAttractedBy(SetGameItem);
         visitingCharacterToUpdate.NumberOfTimesVisited++;
         visitingCharacters.Add(visitingCharacterToUpdate);
-
-
     }
+
+    public void AddToCharacterVisitsOnly(Character visitedCharacter)
+    {
+        Character visitingCharacterToUpdate = visitingCharacters.Find(c => c.characterName == visitedCharacter.characterName);
+        visitingCharacters.Remove(visitingCharacterToUpdate);
+        visitingCharacterToUpdate.NumberOfTimesVisited++;
+        visitingCharacters.Add(visitingCharacterToUpdate);
+    }
+
 
 
 }

@@ -94,3 +94,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: Rose
   ItemCost: 15
+  itemIsInGameScreen: 0
+  attractedCharacters:
+  - {fileID: 4173956333762244946, guid: f51876ac0673b4b42a4cbe9a680055fb, type: 3}
+  - {fileID: 4173956333762244946, guid: f000ce0c46c3b1a4a88ac70c1c8ef1c4, type: 3}
+  - {fileID: 4173956333762244946, guid: 860828cfdcab27246a4e2c2171beea2c, type: 3}

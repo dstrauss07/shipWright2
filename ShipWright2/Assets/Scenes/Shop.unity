@@ -562,6 +562,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShopPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 1616053284257429689, guid: 289c1c3647b2fab47b602c56ef365fa5,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1616053284257429689, guid: 289c1c3647b2fab47b602c56ef365fa5,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1616053282939869383, guid: 289c1c3647b2fab47b602c56ef365fa5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -673,16 +683,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1616053284231647669, guid: 289c1c3647b2fab47b602c56ef365fa5,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1616053284257429689, guid: 289c1c3647b2fab47b602c56ef365fa5,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1616053284257429689, guid: 289c1c3647b2fab47b602c56ef365fa5,
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
@@ -886,7 +886,7 @@ PrefabInstance:
         type: 3}
       propertyPath: items.Array.data[8]
       value: 
-      objectReference: {fileID: 7606251418723115379, guid: 305993462338db947a671412948ecc4c,
+      objectReference: {fileID: 7606251418723115379, guid: 924cbdc57a425bf4291f8aef206a39bb,
         type: 3}
     - target: {fileID: 1616053283504413285, guid: 289c1c3647b2fab47b602c56ef365fa5,
         type: 3}

@@ -8,32 +8,32 @@ public class Item : MonoBehaviour
 
     [SerializeField] public string ItemName;
     [SerializeField] public int ItemCost = 1;
-    [SerializeField] Character attractedCharacter1;
-    public bool characterIsInGameScreen = false;
-    //[SerializeField] Characters attractedCharacter2;
-    //[SerializeField] Characters attractedCharacter3;
+    public bool itemIsInGameScreen = false;
+    [SerializeField] List<Character> attractedCharacters;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public string GetItemName()
     {
          return ItemName;
     }
 
-    public Character GetAttractedCharacter1()
+    public Character GetAttractedCharacter()
     {
-        return attractedCharacter1;
-    }
+        int diceRoll = Random.Range(0, 100);
+        Debug.Log("your rolled " + diceRoll);
+        int attractedCharacterIndex = 0;
+        if (diceRoll <= 60)
+        {
+            attractedCharacterIndex = 0;
+            return attractedCharacters[attractedCharacterIndex];
+        }
+        else
+        {
+            attractedCharacterIndex = Random.Range(1, attractedCharacters.Count);
+            return attractedCharacters[attractedCharacterIndex];
+        }
+ }
 
 
 }

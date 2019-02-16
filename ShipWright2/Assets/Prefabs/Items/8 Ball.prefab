@@ -94,6 +94,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: 8 Ball
   ItemCost: 5
-  attractedCharacter1: {fileID: 4173956333762244946, guid: cbe24d1fddc9cd547ae4023e70bfe86a,
-    type: 3}
-  characterIsInGameScreen: 1
+  itemIsInGameScreen: 0
+  attractedCharacters:
+  - {fileID: 4173956333762244946, guid: cbe24d1fddc9cd547ae4023e70bfe86a, type: 3}
+  - {fileID: 4173956333762244946, guid: 31de759c1edf477448f7f2d4f8b61fde, type: 3}
+  - {fileID: 4173956333762244946, guid: e53b380f07e11f74f8e0cc30fd4eaaea, type: 3}
+  - {fileID: 4173956333762244946, guid: f51876ac0673b4b42a4cbe9a680055fb, type: 3}
