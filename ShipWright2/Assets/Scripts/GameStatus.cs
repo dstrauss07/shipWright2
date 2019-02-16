@@ -74,5 +74,16 @@ public class GameStatus : MonoBehaviour
         return visitingCharacters;
     }
 
+    public void AddItemToVisitedCharacter(Character visitedCharacter, Item SetGameItem)
+    {
+        Character visitingCharacterToUpdate = visitingCharacters.Find(c => c.characterName == visitedCharacter.characterName);
+        visitingCharacters.Remove(visitingCharacterToUpdate);
+        visitingCharacterToUpdate.AddToItemsAttractedBy(SetGameItem);
+        visitingCharacterToUpdate.NumberOfTimesVisited++;
+        visitingCharacters.Add(visitingCharacterToUpdate);
+
+
+    }
+
 
 }

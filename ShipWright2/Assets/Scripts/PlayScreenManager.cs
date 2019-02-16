@@ -47,12 +47,21 @@ public class PlayScreenManager : MonoBehaviour
                     characterToAdd = setGameItem.GetAttractedCharacter1();
                     if (!VisitedCharacters.Contains(characterToAdd))
                     {
-                        Debug.Log("Character has Appeared");
+                        Debug.Log(characterToAdd.characterName + " has Appeared. Drawn by " + setGameItem.ItemName);
                         characterToAdd.AddToItemsAttractedBy(setGameItem);
                         characterToAdd.AddToVisits();
                         gameStatus.AddToVisitedCharacters(setGameItem.GetAttractedCharacter1());
                         characterWaitTime = 5000f;
                     }
+                    else if (VisitedCharacters.Contains(characterToAdd) && !characterToAdd.ReturnItemsAttractedBy().Contains(setGameItem))
+                    {
+                        gameStatus.AddItemToVisitedCharacter(characterToAdd, setGameItem);
+                        characterWaitTime = 5000f;
+                    }
+                    //else if (VisitedCharacters.Contains(characterToAdd) && characterToAdd.ReturnItemsAttractedBy().Contains(setGameItem))
+                    //{
+                    //    gameStatus.AddItemToVisitedCharacter(characterToAdd, setGameItem);
+                    //}
 
                     //characterToAdd.AddToItemsAttractedBy(setGameItem);
                     //gameStatus.AddToVisitedCharacters(setGameItem.GetAttractedCharacter1());
