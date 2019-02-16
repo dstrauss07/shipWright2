@@ -94,3 +94,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: Bowler Hat
   ItemCost: 15
+  attractedCharacter1: {fileID: 4173956333762244946, guid: cbe24d1fddc9cd547ae4023e70bfe86a,
+    type: 3}
+  characterIsInGameScreen: 0

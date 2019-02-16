@@ -10,8 +10,6 @@ public class GuestPanel : MonoBehaviour
 
     [SerializeField] List<Character> allCharacters;
     [SerializeField] List<Character> visitedCharacters; //for debugging
-
-
     [SerializeField] TextMeshProUGUI pageText;
     [SerializeField] List<GameObject> menuItems;
     [SerializeField] List<GameObject> MenuItemImages;
@@ -41,63 +39,69 @@ public class GuestPanel : MonoBehaviour
 
     private void PopulateVisitedCharactersInfo()
     {
-        if (GetPageCount() == 1)
-        {
-            for (int itemNum = 0; itemNum < itemsListLength(); itemNum++)
-            {
-                var currentCharacter = allCharacters[itemNum];
-               //    var  listOfItems =   currentCharacter.ReturnItemsAttractedBy();
-                if (visitedCharacters.Contains(currentCharacter))
-                {
-                    string currentItemName = currentCharacter.characterName;
-                    string currentItemVisits = currentCharacter.NumberOfTimesVisited.ToString();
-                    var currentItemSprite = currentCharacter.GetComponent<SpriteRenderer>().sprite;
-                  //  var currentItemAttract = listOfItems[0].ItemName;
-                    MenuItemNames[itemNum].text = currentItemName;
-                    MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
-                    MenuItemVisits[0].text = currentItemVisits;
-                    //attractedByItems[0].text = currentItemAttract;
-                }
-            }
-        }
-        else if (page != GetPageCount())
+        if (page != GetPageCount())
         {
             for (int itemNum = 0; itemNum < 4; itemNum++)
             {
                 var currentCharacter = allCharacters[itemNum + ((page - 1) * 4)];
-                var listOfItems = currentCharacter.ReturnItemsAttractedBy();
+                string currentItemName = currentCharacter.characterName;
+                string currentItemVisits = currentCharacter.NumberOfTimesVisited.ToString();
+                var currentItemSprite = currentCharacter.GetComponent<SpriteRenderer>().sprite;
+                var currentItemAttract = currentCharacter.ReturnCurrentItemAttractString();
+
+
                 if (visitedCharacters.Contains(currentCharacter))
                 {
-                    string currentItemName = currentCharacter.characterName;
-                    string currentItemVisits = currentCharacter.NumberOfTimesVisited.ToString();
-                    var currentItemSprite = currentCharacter.GetComponent<SpriteRenderer>().sprite;
-                 //       var currentItemAttract = listOfItems[0].ItemName;
+                    Debug.Log(currentCharacter.characterName + " is present");
                     MenuItemNames[itemNum].text = currentItemName;
                     MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
-                    MenuItemVisits[0].text = currentItemVisits;
-                //    attractedByItems[0].text = currentItemAttract;
+                    MenuItemVisits[itemNum].text = currentItemVisits;
+                    attractedByItems[itemNum].text = currentItemAttract;
+                }
+                else
+                {
+                    Debug.Log(currentCharacter.characterName + " is not present");
+                    MenuItemNames[itemNum].text = "?????";
+                    MenuItemImages[itemNum].GetComponent<Image>().sprite = null;
+                    MenuItemVisits[itemNum].text = "0 Visits";
+                    attractedByItems[itemNum].text = "????";
                 }
             }
         }
-        else
+
+        else if (page == GetPageCount())
         {
-            for (int itemNum = 4 - itemListRemainder(); itemNum < 4; itemNum++)
+            Debug.Log("final page");
+
+            for (int itemNum = 0; itemNum < itemListRemainder(); itemNum++)
             {
+                // Debug.Log(itemNum.ToString());
+                var currentCharacter = allCharacters[itemNum + ((page - 1) * 4)];
+                string currentItemName = currentCharacter.characterName;
+                string currentItemVisits = currentCharacter.NumberOfTimesVisited.ToString();
+                var currentItemSprite = currentCharacter.GetComponent<SpriteRenderer>().sprite;
+                var currentItemAttract = currentCharacter.ReturnCurrentItemAttractString();
+
                 int itemIndex = 0;
-                var currentCharacter = allCharacters[itemIndex + ((page - 1) * 4)];
-                var listOfItems = currentCharacter.ReturnItemsAttractedBy();
                 if (visitedCharacters.Contains(currentCharacter))
                 {
-                    string currentItemName = currentCharacter.characterName;
-                    string currentItemVisits = currentCharacter.NumberOfTimesVisited.ToString();
-                    var currentItemSprite = currentCharacter.GetComponent<SpriteRenderer>().sprite;
-                    //   var currentItemAttract = listOfItems[0].ItemName;
+                    Debug.Log(currentCharacter.characterName + " is present");
                     MenuItemNames[itemIndex].text = currentItemName;
                     MenuItemImages[itemIndex].GetComponent<Image>().sprite = currentItemSprite;
-                    MenuItemVisits[0].text = currentItemVisits;
-                   // attractedByItems[0].text = currentItemAttract;
+                    MenuItemVisits[itemIndex].text = currentItemVisits;
+                    attractedByItems[itemIndex].text = currentItemAttract;
                     itemIndex++;
                 }
+                else
+                {
+                    Debug.Log(currentCharacter.characterName + " is not present");
+                    MenuItemNames[itemNum].text = "????";
+                    MenuItemImages[itemNum].GetComponent<Image>().sprite = null;
+                    MenuItemVisits[itemNum].text = "0 Visits";
+                    attractedByItems[itemNum].text = "????";
+                    itemIndex++;
+                }
+
             }
         }
     }
