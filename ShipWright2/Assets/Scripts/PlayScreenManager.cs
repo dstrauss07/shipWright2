@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,8 +16,7 @@ public class PlayScreenManager : MonoBehaviour
     GameObject setButtonText;
     Transform setButtonLocation;
     Item setGameItem;
-    [SerializeField] float characterWaitTime = 5f;
-
+    float characterWaitTime;
     Character characterToAdd;
     Item itemToAdd;
     List<Character> VisitedCharacters;
@@ -29,6 +29,7 @@ public class PlayScreenManager : MonoBehaviour
         animationSpawner = FindObjectOfType<AnimationSpawner>();
         SetButton1();
         VisitedCharacters = gameStatus.GetListVisitingCharacters();
+        characterWaitTime = gameStatus.GetTimeBeforeSpawn();
 
 
 
@@ -44,10 +45,7 @@ public class PlayScreenManager : MonoBehaviour
                 characterWaitTime -= Time.deltaTime;
                 if (characterWaitTime <= 0)
                 {
-                    //TODO replace instantiate with animations
-                    //Character setCharacter = Instantiate(setGameItem.GetAttractedCharacter1(), transform.position, Quaternion.identity) as Character;
                     characterToAdd = setGameItem.GetAttractedCharacter();
-                    itemToAdd = setGameItem;
                     SpawnAnimationForCharacterAndItem();
                     AddCharacterToVisitedCharacters();
                 }
@@ -57,8 +55,18 @@ public class PlayScreenManager : MonoBehaviour
 
     private void SpawnAnimationForCharacterAndItem()
     {
-        AnimationScript animationToSpawn = animationSpawner.ReturnRequestedAnimation(characterToAdd, itemToAdd);
+        AnimationScript animationToSpawn = animationSpawner.ReturnRequestedAnimation(characterToAdd, setGameItem);
         AnimationScript setAnimation = Instantiate(animationToSpawn, setButtonLocation.position, Quaternion.identity) as AnimationScript;
+        setGameItem.itemIsInGameScreen = false;
+        StartCoroutine(WaitThenRemoveAnimation());
+    }
+
+    private IEnumerator WaitThenRemoveAnimation()
+    {
+        yield return new WaitForSeconds(gameStatus.GetTimeBeforeRemove());
+        Destroy(gameObject);
+        setGameItem.itemIsInGameScreen = true;
+        SceneManager.LoadScene("PlayScreen");
     }
 
     private void AddCharacterToVisitedCharacters()
@@ -69,6 +77,7 @@ public class PlayScreenManager : MonoBehaviour
             characterToAdd.AddToItemsAttractedBy(setGameItem);
             characterToAdd.AddToVisits();
             gameStatus.AddToVisitedCharacters(characterToAdd);
+            gameStatus.Save();
             characterWaitTime = 5000f;
         }
         else if (VisitedCharacters.Contains(characterToAdd))
@@ -79,12 +88,14 @@ public class PlayScreenManager : MonoBehaviour
             {
                 Debug.Log(characterToAdd.characterName + " has Appeared Again. Drawn by New Item" + setGameItem.ItemName);
                 gameStatus.AddItemToVisitedCharacter(characterToAdd, setGameItem);
+                gameStatus.Save();
                 characterWaitTime = 5000f;
             }
             else if (ItemListToCheck.Contains(setGameItem.ItemName))
             {
                 Debug.Log(characterToAdd.characterName + " has Appeared Again. Drawn by Old Item" + setGameItem.ItemName);
                 gameStatus.AddToCharacterVisitsOnly(characterToAdd);
+                gameStatus.Save();
                 characterWaitTime = 5000f;
             }
         }
@@ -128,6 +139,7 @@ public class PlayScreenManager : MonoBehaviour
         setGameItem.transform.localScale += new Vector3(100f, 100f, 0);
         gameStatus.setModeActive = false;
         gameStatus.SetItem1(gameStatus.getItemToSet());
+        gameStatus.Save();
         SceneManager.LoadScene("PlayScreen");
     }
 

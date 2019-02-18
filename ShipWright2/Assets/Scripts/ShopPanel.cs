@@ -13,13 +13,13 @@ public class ShopPanel : MonoBehaviour
     [SerializeField] List<TextMeshProUGUI> MenuItemNames;
     [SerializeField] List<TextMeshProUGUI> MenuItemCosts;
     [SerializeField] List<GameObject> MenuItemImages;
-      [SerializeField] List<GameObject> menuItems;
+    [SerializeField] List<GameObject> menuItems;
     [SerializeField] TextMeshProUGUI pageText;
-  
+
 
     int page = 1;
     GameStatus gameStatus;
-    
+
     public void Start()
     {
 
@@ -40,19 +40,7 @@ public class ShopPanel : MonoBehaviour
     private void PopulateItemList()
     {
 
-        if (GetPageCount() == 1)
-        {
-            for (int itemNum = 0; itemNum < itemsListLength(); itemNum++)
-            {
-                var currentItem = items[itemNum];
-                string currentItemName = currentItem.ItemName;
-                var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
-                MenuItemNames[itemNum].text = currentItemName;
-                MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
-            }
-        }
-
-        else if (page != GetPageCount())
+        if (page != GetPageCount() || itemListRemainder() == 0)
         {
             for (int itemNum = 0; itemNum < 4; itemNum++)
             {
@@ -65,20 +53,18 @@ public class ShopPanel : MonoBehaviour
                 MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
             }
         }
-        else
+        else if (page == GetPageCount() && itemListRemainder() != 0)
         {
-            for (int itemNum = 4 - itemListRemainder(); itemNum < 4; itemNum++)
+            for (int itemNum = 0; itemNum < itemListRemainder(); itemNum++)
             {
-                int itemIndex = 0;
-                var currentItem = items[itemIndex + ((page - 1) * 4)];
+                var currentItem = items[itemNum + ((page - 1) * 4)];
                 string currentItemName = currentItem.ItemName;
                 string currentItemCost = currentItem.ItemCost.ToString();
                 var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
-                MenuItemNames[itemIndex].text = currentItemName;
-                MenuItemCosts[itemIndex].text = currentItemCost;
-                MenuItemImages[itemIndex].GetComponent<Image>().sprite = currentItemSprite;
-                itemIndex++;
-            }
+                MenuItemNames[itemNum].text = currentItemName;
+                MenuItemCosts[itemNum].text = currentItemCost;
+                MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
+                 }
         }
     }
 
@@ -164,24 +150,28 @@ public class ShopPanel : MonoBehaviour
     public void AddToGameItems0()
     {
         gameStatus.AddToGameItems(items[0 + ((page - 1) * 4)]);
+        gameStatus.Save();
         SceneManager.LoadScene("Inventory");
     }
 
     public void AddToGameItems1()
     {
         gameStatus.AddToGameItems(items[1 + ((page - 1) * 4)]);
+        gameStatus.Save();
         SceneManager.LoadScene("Inventory");
     }
 
     public void AddToGameItems2()
     {
         gameStatus.AddToGameItems(items[2 + ((page - 1) * 4)]);
+        gameStatus.Save();
         SceneManager.LoadScene("Inventory");
     }
 
     public void AddToGameItems3()
     {
         gameStatus.AddToGameItems(items[3 + ((page - 1) * 4)]);
+        gameStatus.Save();
         SceneManager.LoadScene("Inventory");
     }
 

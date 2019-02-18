@@ -6,11 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/GuestBook.unity
-    guid: 4eb3e116ff8930c458845510daceee7b
+    path: Assets/Scenes/StartScreen.unity
+    guid: d413542c6cbdfa341acf468a6da50e3d
   - enabled: 1
     path: Assets/Scenes/PlayScreen.unity
     guid: 2778a02ae4bd43944b5370a73df44cdc
+  - enabled: 1
+    path: Assets/Scenes/GuestBook.unity
+    guid: 4eb3e116ff8930c458845510daceee7b
   - enabled: 1
     path: Assets/Scenes/Shop.unity
     guid: 8386dc93aeec8274e89852b42cbcd9df

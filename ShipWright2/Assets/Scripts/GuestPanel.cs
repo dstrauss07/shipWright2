@@ -39,7 +39,7 @@ public class GuestPanel : MonoBehaviour
 
     private void PopulateVisitedCharactersInfo()
     {
-        if (page != GetPageCount())
+        if (page != GetPageCount() || itemListRemainder() == 0)
         {
             for (int itemNum = 0; itemNum < 4; itemNum++)
             {
@@ -55,7 +55,7 @@ public class GuestPanel : MonoBehaviour
                     Debug.Log(currentCharacter.characterName + " is present");
                     MenuItemNames[itemNum].text = currentItemName;
                     MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
-                    MenuItemVisits[itemNum].text = currentItemVisits;
+                    MenuItemVisits[itemNum].text = currentItemVisits +" Visits";
                     attractedByItems[itemNum].text = currentItemAttract;
                 }
                 else
@@ -69,7 +69,7 @@ public class GuestPanel : MonoBehaviour
             }
         }
 
-        else if (page == GetPageCount())
+        else if (page == GetPageCount() && itemListRemainder() != 0)
         {
             Debug.Log("final page");
 
@@ -82,16 +82,14 @@ public class GuestPanel : MonoBehaviour
                 var currentItemSprite = currentCharacter.GetComponent<SpriteRenderer>().sprite;
                 var currentItemAttract = currentCharacter.ReturnCurrentItemAttractString();
 
-                int itemIndex = 0;
                 if (visitedCharacters.Contains(currentCharacter))
                 {
                     Debug.Log(currentCharacter.characterName + " is present");
-                    MenuItemNames[itemIndex].text = currentItemName;
-                    MenuItemImages[itemIndex].GetComponent<Image>().sprite = currentItemSprite;
-                    MenuItemVisits[itemIndex].text = currentItemVisits;
-                    attractedByItems[itemIndex].text = currentItemAttract;
-                    itemIndex++;
-                }
+                    MenuItemNames[itemNum].text = currentItemName;
+                    MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
+                    MenuItemVisits[itemNum].text = currentItemVisits + " Visits";
+                    attractedByItems[itemNum].text = currentItemAttract;
+                  }
                 else
                 {
                     Debug.Log(currentCharacter.characterName + " is not present");
@@ -99,8 +97,7 @@ public class GuestPanel : MonoBehaviour
                     MenuItemImages[itemNum].GetComponent<Image>().sprite = null;
                     MenuItemVisits[itemNum].text = "0 Visits";
                     attractedByItems[itemNum].text = "????";
-                    itemIndex++;
-                }
+                  }
 
             }
         }

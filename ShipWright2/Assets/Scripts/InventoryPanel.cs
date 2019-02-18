@@ -41,23 +41,11 @@ public class InventoryPanel : MonoBehaviour
 
      private void PopulateItemList()
     {
-        if (GetPageCount() == 1)
-        {
-            for (int itemNum = 0; itemNum < itemsListLength(); itemNum++ )
-            {
-                var currentItem = inventoryItems[itemNum];
-                string currentItemName = currentItem.ItemName;
-                var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
-                MenuItemNames[itemNum].text = currentItemName;
-                MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
-            }
-
-
-        }
-        else if (page != GetPageCount() && GetPageCount() != 1)
+        if (page != GetPageCount() || itemListRemainder() == 0)
         {
             for (int itemNum = 0; itemNum < 4; itemNum++)
             {
+                Debug.Log("not final page # " + page + "itemNum" + itemNum);
                 var currentItem = inventoryItems[itemNum + ((page - 1) * 4)];
                 string currentItemName = currentItem.ItemName;
                 var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
@@ -65,18 +53,17 @@ public class InventoryPanel : MonoBehaviour
                 MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
             }
         }
-        else
+        else if (page == GetPageCount() && itemListRemainder() !=0)
         {
-            for (int itemNum = 4 - itemListRemainder(); itemNum < 4; itemNum++)
+            for (int itemNum = 0;  itemNum < itemListRemainder(); itemNum++)
             {
-                int itemIndex = 0;
-                var currentItem = inventoryItems[itemIndex + ((page - 1) * 4)];
+                Debug.Log("final page # " + page + "itemNum" + itemNum);
+                var currentItem = inventoryItems[itemNum + ((page - 1) * 4)];
                 string currentItemName = currentItem.ItemName;
                 var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
-                MenuItemNames[itemIndex].text = currentItemName;
-                MenuItemImages[itemIndex].GetComponent<Image>().sprite = currentItemSprite;
-                itemIndex++;
-            }
+                MenuItemNames[itemNum].text = currentItemName;
+                MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
+               }
         }
     }
 
