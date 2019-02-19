@@ -10,6 +10,7 @@ public class Character : MonoBehaviour
     [SerializeField] public int NumberOfTimesVisited = 0;
     [SerializeField] public string characterName;
     public List<string> ItemListNamesToReturn;
+    public string lastVisitDateTimeString;
 
 
     public void AddToItemsAttractedBy(Item itemAttractedBy)

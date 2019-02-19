@@ -11,16 +11,21 @@ public class GameStatus : MonoBehaviour
     [SerializeField] List<Item> gameItems;
     [SerializeField] List<Character> visitingCharacters;
     [SerializeField] public Item setItem1;
+    [SerializeField] List<string> picturesTakenNames;
 
-    [Header("Item Setters")]
-    Item itemToSet;
+    [Header("Game Screen Setters")]
     public bool setModeActive = false;
+    public bool pictureModeActive = false;
+    Item itemToSet;
+    
 
 
     [Header("Times to Wait Between Loads")]
     [SerializeField] float characterWaitTime = 5f;
     [SerializeField] float timeBeforeRemove = 15f;
    [SerializeField] public int timeBetweenVisitsWhenAway = 5;
+
+
 
     private void Awake()
     {
@@ -41,14 +46,15 @@ public class GameStatus : MonoBehaviour
         }
     }
 
-    
+
 
     [Serializable]
     public class GameData
     {
         public List<string> PurchasedItems;
-        public List<visitingCharactersToSerialize> visitingCharacters;
         public string setItem1Name;
+        public List<string> picturesTaken;
+        public List<visitingCharactersToSerialize> visitingCharacters;
         public string lastSaveTime;
     }
     [Serializable]
@@ -57,6 +63,7 @@ public class GameStatus : MonoBehaviour
         public string characterName;
         public int NumberOfTimesVisited;
         public List<string> attractedItems;
+        public string lastVisitTime;
     }
 
 
@@ -79,6 +86,13 @@ public class GameStatus : MonoBehaviour
             Debug.Log(gameItems[itemNum].ItemName + "added");
         }
 
+        data.picturesTaken = new List<string>();
+
+        for (int pictureNum = 0; pictureNum < picturesTakenNames.Count; pictureNum++)
+        {
+            data.picturesTaken.Add(picturesTakenNames[pictureNum]);
+        }
+
         data.visitingCharacters = new List<visitingCharactersToSerialize>();
 
         for (int charNum = 0; charNum < visitingCharacters.Count; charNum++)
@@ -89,7 +103,7 @@ public class GameStatus : MonoBehaviour
 
             visitingCharacterstoSerializeYo.characterName = visitingCharacters[charNum].characterName;
             visitingCharacterstoSerializeYo.NumberOfTimesVisited = visitingCharacters[charNum].NumberOfTimesVisited;
-
+            visitingCharacterstoSerializeYo.lastVisitTime = visitingCharacters[charNum].lastVisitDateTimeString;
             visitingCharacterstoSerializeYo.attractedItems = new List<string>();
 
             for (int attractedItemsNum = 0; attractedItemsNum < visitingCharacters[charNum].ItemsAttractedBy.Count; attractedItemsNum++)
@@ -175,6 +189,7 @@ public class GameStatus : MonoBehaviour
         visitingCharacters.Remove(visitingCharacterToUpdate);
         visitingCharacterToUpdate.AddToItemsAttractedBy(SetGameItem);
         visitingCharacterToUpdate.NumberOfTimesVisited++;
+        visitingCharacterToUpdate.lastVisitDateTimeString = DateTime.Now.ToString();
         visitingCharacters.Add(visitingCharacterToUpdate);
     }
 
@@ -183,6 +198,7 @@ public class GameStatus : MonoBehaviour
         Character visitingCharacterToUpdate = visitingCharacters.Find(c => c.characterName == visitedCharacter.characterName);
         visitingCharacters.Remove(visitingCharacterToUpdate);
         visitingCharacterToUpdate.NumberOfTimesVisited++;
+        visitingCharacterToUpdate.lastVisitDateTimeString = DateTime.Now.ToString();
         visitingCharacters.Add(visitingCharacterToUpdate);
     }
 
@@ -196,6 +212,20 @@ public class GameStatus : MonoBehaviour
         return characterWaitTime;
     }
 
+
+    public void AddAPicture(string characterName, string itemName)
+    {
+        if (!picturesTakenNames.Contains(characterName + itemName))
+        {
+            picturesTakenNames.Add(characterName + itemName);
+            Save();
+        }
+    }
+
+    public void AddAPicture(string pictureTakenName)
+    {
+        picturesTakenNames.Add(pictureTakenName);
+    }
 
 
 }

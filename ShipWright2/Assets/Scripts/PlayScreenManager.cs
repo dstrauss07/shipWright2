@@ -20,6 +20,7 @@ public class PlayScreenManager : MonoBehaviour
     Character characterToAdd;
     Item itemToAdd;
     List<Character> VisitedCharacters;
+    GameObject target1;
 
 
     // Start is called before the first frame update
@@ -27,9 +28,14 @@ public class PlayScreenManager : MonoBehaviour
     {
         gameStatus = FindObjectOfType<GameStatus>();
         animationSpawner = FindObjectOfType<AnimationSpawner>();
-        SetButton1();
         VisitedCharacters = gameStatus.GetListVisitingCharacters();
         characterWaitTime = gameStatus.GetTimeBeforeSpawn();
+        SetButton1();
+        toggleCamera();
+        target1 = GameObject.Find("Target1");
+        target1.GetComponent<Image>().enabled = false;
+        target1.GetComponent<Button>().enabled = false;
+
 
 
 
@@ -58,6 +64,8 @@ public class PlayScreenManager : MonoBehaviour
         AnimationScript animationToSpawn = animationSpawner.ReturnRequestedAnimation(characterToAdd, setGameItem);
         AnimationScript setAnimation = Instantiate(animationToSpawn, setButtonLocation.position, Quaternion.identity) as AnimationScript;
         setGameItem.itemIsInGameScreen = false;
+        gameStatus.pictureModeActive = true;
+        toggleCamera();
         StartCoroutine(WaitThenRemoveAnimation());
     }
 
@@ -66,6 +74,7 @@ public class PlayScreenManager : MonoBehaviour
         yield return new WaitForSeconds(gameStatus.GetTimeBeforeRemove());
         Destroy(gameObject);
         setGameItem.itemIsInGameScreen = true;
+        gameStatus.pictureModeActive = false;
         SceneManager.LoadScene("PlayScreen");
     }
 
@@ -76,6 +85,7 @@ public class PlayScreenManager : MonoBehaviour
             Debug.Log(characterToAdd.characterName + " has Appeared. Drawn by " + setGameItem.ItemName);
             characterToAdd.AddToItemsAttractedBy(setGameItem);
             characterToAdd.AddToVisits();
+            characterToAdd.lastVisitDateTimeString = DateTime.Now.ToString();
             gameStatus.AddToVisitedCharacters(characterToAdd);
             gameStatus.Save();
             characterWaitTime = 5000f;
@@ -109,9 +119,7 @@ public class PlayScreenManager : MonoBehaviour
 
         if (!gameStatus.setModeActive)
         {
-            setButton.GetComponent<Image>().enabled = false;
-            setButton.GetComponent<Button>().enabled = false;
-            setButtonText.GetComponent<Text>().enabled = false;
+            HideSetArea();
         }
 
         if (gameStatus.getSetItem1() != null && !gameStatus.setModeActive)
@@ -119,6 +127,7 @@ public class PlayScreenManager : MonoBehaviour
             setGameItem = Instantiate(gameStatus.getSetItem1(), setButtonLocation);
             setGameItem.transform.localScale += new Vector3(100f, 100f, 0);
             setGameItem.itemIsInGameScreen = true;
+            HideSetArea();
         }
 
         if (gameStatus.getSetItem1() != null && gameStatus.setModeActive)
@@ -150,5 +159,35 @@ public class PlayScreenManager : MonoBehaviour
         setButtonText.GetComponent<Text>().enabled = false;
     }
 
+    private void toggleCamera()
+    {
+        GameObject pictureTaker = GameObject.Find("PictureTaker");
+        if(!gameStatus.pictureModeActive)
+        {
+            pictureTaker.GetComponent<Image>().enabled = false;
+            pictureTaker.GetComponent<Button>().enabled = false;
+        }
+        else
+        {
+            pictureTaker.GetComponent<Image>().enabled = true;
+            pictureTaker.GetComponent<Button>().enabled = true;
+        }
+    }
+
+    public void turnOnTargets()
+        {
+        Debug.Log("take a picture");
+        target1 = GameObject.Find("Target1");
+        target1.GetComponent<Image>().enabled = true;
+        target1.GetComponent<Button>().enabled = true;
+        }
+
+    public void TakeAPicture1()
+    {
+        Debug.Log("Picture Taken");
+        string itemForPicture = gameStatus.setItem1.ItemName;
+        string characterForPicture = characterToAdd.characterName;
+        gameStatus.AddAPicture(characterForPicture, itemForPicture);
+    }
 
 }

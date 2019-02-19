@@ -12,7 +12,7 @@ public class StartScreenManager : MonoBehaviour
     GameStatus gameStatus;
     GameStatus.GameData loadedData;
     Item loadedSetItem1;
-    public DateTime lastSaveTimeInDateTime;
+     public DateTime lastSaveTimeInDateTime;
     public DateTime currentDateTime;
     Character characterToAdd;
     List<Character> visitedCharacters;
@@ -48,10 +48,16 @@ public class StartScreenManager : MonoBehaviour
             gameStatus.AddToGameItems(itemToAdd);
         }
 
+        foreach (string pictureTakenName in loadedData.picturesTaken)
+        {
+            gameStatus.AddAPicture(pictureTakenName);
+        }
+
         foreach (GameStatus.visitingCharactersToSerialize visitedCharacter in loadedData.visitingCharacters)
         {
             Character characterToLoad = allCharactersToLoad.Find(character => character.characterName == visitedCharacter.characterName);
             characterToLoad.NumberOfTimesVisited = visitedCharacter.NumberOfTimesVisited;
+            characterToLoad.lastVisitDateTimeString = visitedCharacter.lastVisitTime;
 
             foreach (string loadedAttractedItem in visitedCharacter.attractedItems)
             {
@@ -87,6 +93,7 @@ public class StartScreenManager : MonoBehaviour
                 Debug.Log(characterToAdd.characterName + " has Appeared. Drawn by " + setItem1.ItemName);
                 characterToAdd.AddToItemsAttractedBy(setItem1);
                 characterToAdd.AddToVisits();
+                characterToAdd.lastVisitDateTimeString = DateTime.Now.ToString();
                 gameStatus.AddToVisitedCharacters(characterToAdd);
                 gameStatus.Save();
             }
@@ -104,8 +111,7 @@ public class StartScreenManager : MonoBehaviour
                 {
                     Debug.Log(characterToAdd.characterName + " has Appeared Again. Drawn by Old Item" + setItem1.ItemName);
                     gameStatus.AddToCharacterVisitsOnly(characterToAdd);
-                    gameStatus.Save();
-                }
+                 }
             }
         }
     }
