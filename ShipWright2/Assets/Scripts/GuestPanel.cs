@@ -11,11 +11,11 @@ public class GuestPanel : MonoBehaviour
     [SerializeField] List<Character> allCharacters;
     [SerializeField] List<Character> visitedCharacters; //for debugging
     [SerializeField] TextMeshProUGUI pageText;
-    [SerializeField] List<GameObject> menuItems;
-    [SerializeField] List<GameObject> MenuItemImages;
-    [SerializeField] List<TextMeshProUGUI> MenuItemNames;
-    [SerializeField] List<TextMeshProUGUI> attractedByItems;
-    [SerializeField] List<TextMeshProUGUI> MenuItemVisits;
+    [SerializeField] PictureSprite mysteryImage;
+    [SerializeField] List<PictureSprite> characterPictures;
+    [SerializeField] GuestMenuItem menuItem0;
+    [SerializeField] GuestMenuItem1 menuItem1;
+    List<PictureSprite> pictureSpriteList;
 
     int page = 1;
     GameStatus gameStatus;
@@ -32,93 +32,41 @@ public class GuestPanel : MonoBehaviour
     private void PopulateMenu()
     {
         TogglePageButtons();
-        removeUnnecessaryItemSpots();
         pageText.text = "Page " + page.ToString() + " Of " + GetPageCount().ToString();
         PopulateVisitedCharactersInfo();
     }
 
     private void PopulateVisitedCharactersInfo()
     {
-        if (page != GetPageCount() || itemListRemainder() == 0)
+        for (int itemNum = 0; itemNum < 2; itemNum++)
         {
-            for (int itemNum = 0; itemNum < 4; itemNum++)
+
+            var currentCharacter = allCharacters[itemNum + ((page - 1) * 2)];
+            if (itemNum == 0)
             {
-                var currentCharacter = allCharacters[itemNum + ((page - 1) * 4)];
-                string currentItemName = currentCharacter.characterName;
-                string currentItemVisits = currentCharacter.NumberOfTimesVisited.ToString();
-                var currentItemSprite = currentCharacter.GetComponent<SpriteRenderer>().sprite;
-                var currentItemAttract = currentCharacter.ReturnCurrentItemAttractString();
-
-
                 if (visitedCharacters.Contains(currentCharacter))
                 {
-                    Debug.Log(currentCharacter.characterName + " is present");
-                    MenuItemNames[itemNum].text = currentItemName;
-                    MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
-                    MenuItemVisits[itemNum].text = currentItemVisits +" Visits";
-                    attractedByItems[itemNum].text = currentItemAttract;
+                    PopulateMenuItem0(currentCharacter);
                 }
                 else
                 {
-                    Debug.Log(currentCharacter.characterName + " is not present");
-                    MenuItemNames[itemNum].text = "?????";
-                    MenuItemImages[itemNum].GetComponent<Image>().sprite = null;
-                    MenuItemVisits[itemNum].text = "0 Visits";
-                    attractedByItems[itemNum].text = "????";
+                    MenuItem0Blank();
                 }
             }
-        }
 
-        else if (page == GetPageCount() && itemListRemainder() != 0)
-        {
-            Debug.Log("final page");
-
-            for (int itemNum = 0; itemNum < itemListRemainder(); itemNum++)
+            if (itemNum == 1)
             {
-                // Debug.Log(itemNum.ToString());
-                var currentCharacter = allCharacters[itemNum + ((page - 1) * 4)];
-                string currentItemName = currentCharacter.characterName;
-                string currentItemVisits = currentCharacter.NumberOfTimesVisited.ToString();
-                var currentItemSprite = currentCharacter.GetComponent<SpriteRenderer>().sprite;
-                var currentItemAttract = currentCharacter.ReturnCurrentItemAttractString();
-
                 if (visitedCharacters.Contains(currentCharacter))
                 {
-                    Debug.Log(currentCharacter.characterName + " is present");
-                    MenuItemNames[itemNum].text = currentItemName;
-                    MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
-                    MenuItemVisits[itemNum].text = currentItemVisits + " Visits";
-                    attractedByItems[itemNum].text = currentItemAttract;
-                  }
+
+                    PopulateMenuItem1(currentCharacter);
+                }
                 else
                 {
-                    Debug.Log(currentCharacter.characterName + " is not present");
-                    MenuItemNames[itemNum].text = "????";
-                    MenuItemImages[itemNum].GetComponent<Image>().sprite = null;
-                    MenuItemVisits[itemNum].text = "0 Visits";
-                    attractedByItems[itemNum].text = "????";
-                  }
-
+                    MenuItem1Blank();
+                }
             }
-        }
-    }
 
-    private void removeUnnecessaryItemSpots()
-    {
-        if (page == GetPageCount() && itemListRemainder() != 0)
-
-        {
-            for (int itemNum = itemListRemainder(); itemNum < 4; itemNum++)
-            {
-                menuItems[itemNum].SetActive(false);
-            }
-        }
-        else
-        {
-            for (int itemNum = itemListRemainder(); itemNum < 4; itemNum++)
-            {
-                menuItems[itemNum].SetActive(true);
-            }
         }
     }
 
@@ -129,14 +77,14 @@ public class GuestPanel : MonoBehaviour
 
     public int itemListRemainder()
     {
-        return itemsListLength() % 4;
+        return itemsListLength() % 2;
     }
 
     public int GetPageCount()
     {
 
         int records = itemsListLength();
-        int pageCount = (records + 3) / 4;
+        int pageCount = (records + 1) / 2;
         return pageCount;
     }
 
@@ -147,22 +95,85 @@ public class GuestPanel : MonoBehaviour
             GameObject.Find("Previous Page").GetComponent<TextMeshProUGUI>().enabled = false;
             GameObject.Find("Previous Page").GetComponent<Button>().enabled = false;
         }
-        else
-        {
-            GameObject.Find("Previous Page").GetComponent<TextMeshProUGUI>().enabled = true;
-            GameObject.Find("Previous Page").GetComponent<Button>().enabled = true;
-        }
-
-        if (page == GetPageCount())
+        else if (page == GetPageCount())
         {
             GameObject.Find("Next Page").GetComponent<TextMeshProUGUI>().enabled = false;
             GameObject.Find("Next Page").GetComponent<Button>().enabled = false;
         }
+
         else
         {
             GameObject.Find("Next Page").GetComponent<TextMeshProUGUI>().enabled = true;
             GameObject.Find("Next Page").GetComponent<Button>().enabled = true;
+            GameObject.Find("Previous Page").GetComponent<TextMeshProUGUI>().enabled = true;
+            GameObject.Find("Previous Page").GetComponent<Button>().enabled = true;
         }
+    }
+
+    private void ClearPreviousPageItems()
+    {
+        MenuItem0Blank();
+        MenuItem1Blank();
+
+    }
+
+
+    private void MenuItem0Blank()
+    {
+        menuItem0.SetMainImage(mysteryImage.GetComponent<SpriteRenderer>().sprite);
+        menuItem0.SetCharacterName("???????");
+        menuItem0.SetVisitNumber("0");
+        menuItem0.SetLastVisit("Never Visited");
+        menuItem0.SetAttractedItems("????" + "\n" + "????" + "\n" + "????");
+        menuItem0.SetCharacterPictures();
+    }
+
+    private void MenuItem1Blank()
+    {
+        menuItem1.SetMainImage(mysteryImage.GetComponent<SpriteRenderer>().sprite);
+        menuItem1.SetCharacterName("???????");
+        menuItem1.SetVisitNumber("0");
+        menuItem1.SetLastVisit("Never Visited");
+        menuItem1.SetAttractedItems("????" + "\n" + "????" + "\n" + "????");
+        menuItem1.SetCharacterPictures();
+    }
+
+    private void PopulateMenuItem0(Character currentCharacter)
+    {
+        menuItem0.SetMainImage(currentCharacter.characterSprite);
+        menuItem0.SetCharacterName(currentCharacter.characterName);
+        menuItem0.SetVisitNumber(currentCharacter.NumberOfTimesVisited.ToString());
+        menuItem0.SetLastVisit(currentCharacter.lastVisitDateTimeString);
+        menuItem0.SetAttractedItems(currentCharacter.ReturnCurrentItemAttractString());
+
+
+        List<PictureSprite> pictureSpriteList = new List<PictureSprite>();
+        foreach (string pictureName in currentCharacter.picturesTakenNameForCharacter)
+        {
+            PictureSprite pictureSpriteToAdd = characterPictures.Find(p => p.pictureSpriteName == pictureName);
+            pictureSpriteList.Add(pictureSpriteToAdd);
+        }
+
+        menuItem0.SetCharacterPictures(pictureSpriteList);
+    }
+
+
+    private void PopulateMenuItem1(Character currentCharacter)
+    {
+        menuItem1.SetMainImage(currentCharacter.characterSprite);
+        menuItem1.SetCharacterName(currentCharacter.characterName);
+        menuItem1.SetVisitNumber(currentCharacter.NumberOfTimesVisited.ToString());
+        menuItem1.SetLastVisit(currentCharacter.lastVisitDateTimeString);
+        menuItem1.SetAttractedItems(currentCharacter.ReturnCurrentItemAttractString());
+
+        List<PictureSprite> pictureSpriteList = new List<PictureSprite>();
+        foreach(string pictureName in currentCharacter.picturesTakenNameForCharacter)
+        {
+            PictureSprite pictureSpriteToAdd = characterPictures.Find(p => p.pictureSpriteName == pictureName);
+            pictureSpriteList.Add(pictureSpriteToAdd);
+        }
+               
+        menuItem1.SetCharacterPictures(pictureSpriteList);
     }
 
     public void NextPage()
@@ -179,12 +190,5 @@ public class GuestPanel : MonoBehaviour
         PopulateMenu();
     }
 
-    private void ClearPreviousPageItems()
-    {
-        for (int menuIndex = 0; menuIndex < 4; menuIndex++)
-        {
-            menuItems[menuIndex].GetComponentInChildren<TextMeshProUGUI>().text = "????";
-            menuItems[menuIndex].GetComponentInChildren<Image>().sprite = null;
-        }
-    }
+
 }

@@ -97,3 +97,6 @@ MonoBehaviour:
   NumberOfTimesVisited: 0
   characterName: Raccoon
   ItemListNamesToReturn: []
+  lastVisitDateTimeString: 
+  picturesTakenNameForCharacter: []
+  characterSprite: {fileID: 21300000, guid: 01b04d3b29b2c8846a73e4802a3b6a01, type: 3}

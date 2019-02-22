@@ -97,3 +97,6 @@ MonoBehaviour:
   NumberOfTimesVisited: 0
   characterName: PuffGreen
   ItemListNamesToReturn: []
+  lastVisitDateTimeString: 
+  picturesTakenNameForCharacter: []
+  characterSprite: {fileID: 21300000, guid: 7cd054aac8a6aaf4381ecb3b0e483823, type: 3}

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Character : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Character : MonoBehaviour
     [SerializeField] public string characterName;
     public List<string> ItemListNamesToReturn;
     public string lastVisitDateTimeString;
+    public List<string> picturesTakenNameForCharacter;
+    [SerializeField] public Sprite characterSprite;
 
 
     public void AddToItemsAttractedBy(Item itemAttractedBy)

@@ -97,3 +97,6 @@ MonoBehaviour:
   NumberOfTimesVisited: 0
   characterName: Dragon
   ItemListNamesToReturn: []
+  lastVisitDateTimeString: 
+  picturesTakenNameForCharacter: []
+  characterSprite: {fileID: 21300000, guid: 4a71ce589bbe8a841898f9dc79e3c526, type: 3}

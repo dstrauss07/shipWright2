@@ -97,3 +97,6 @@ MonoBehaviour:
   NumberOfTimesVisited: 0
   characterName: Bear
   ItemListNamesToReturn: []
+  lastVisitDateTimeString: 
+  picturesTakenNameForCharacter: []
+  characterSprite: {fileID: 21300000, guid: 1a661bc3a4a136c4a94d9cef644c5f34, type: 3}

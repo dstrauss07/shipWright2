@@ -93,5 +93,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemsAttractedBy: []
+  CurrentItemAttractString: 
   NumberOfTimesVisited: 0
   characterName: Megu
+  ItemListNamesToReturn: []
+  lastVisitDateTimeString: 
+  picturesTakenNameForCharacter: []
+  characterSprite: {fileID: 21300000, guid: 5236e8ee0de93c545b18ab8f02b92550, type: 3}
