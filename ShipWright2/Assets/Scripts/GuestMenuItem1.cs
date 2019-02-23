@@ -43,14 +43,9 @@ public class GuestMenuItem1 : MonoBehaviour
     {
         for (int pictureNum = 0; pictureNum < 3; pictureNum++)
         {
-            if (charPictures[pictureNum] != null)
-            {
+
                 CharacterPictures[pictureNum].GetComponent<Image>().sprite = charPictures[pictureNum].GetComponent<SpriteRenderer>().sprite;
-            }
-            else
-            {
-                CharacterPictures[pictureNum].GetComponent<Image>().sprite = mysteryImage.GetComponent<SpriteRenderer>().sprite;
-            }
+
         }
     }
     public void SetCharacterPictures()
@@ -62,4 +57,7 @@ public class GuestMenuItem1 : MonoBehaviour
 
         }
     }
+
+
+
 }

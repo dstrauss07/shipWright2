@@ -16,6 +16,7 @@ public class GuestPanel : MonoBehaviour
     [SerializeField] GuestMenuItem menuItem0;
     [SerializeField] GuestMenuItem1 menuItem1;
     List<PictureSprite> pictureSpriteList;
+    [SerializeField] GameObject menuItemToHide;
 
     int page = 1;
     GameStatus gameStatus;
@@ -33,42 +34,43 @@ public class GuestPanel : MonoBehaviour
     {
         TogglePageButtons();
         pageText.text = "Page " + page.ToString() + " Of " + GetPageCount().ToString();
-        PopulateVisitedCharactersInfo();
+        PopulateVisitedCharactersInfo1();
+        PopulateVisitedCharactersInfo2();
     }
 
-    private void PopulateVisitedCharactersInfo()
+    private void PopulateVisitedCharactersInfo1()
     {
-        for (int itemNum = 0; itemNum < 2; itemNum++)
+        Character currentCharacter = allCharacters[(page - 1) * 2];
+
+        if (visitedCharacters.Contains(currentCharacter))
+        {
+            PopulateMenuItem0(currentCharacter);
+
+        }
+        else
+        {
+            MenuItem0Blank();
+        }
+    }
+
+
+    private void PopulateVisitedCharactersInfo2()
+    {
+        Character currentCharacter2 = allCharacters[((page - 1) * 2) + 1];
+
+        if (visitedCharacters.Contains(currentCharacter2))
         {
 
-            var currentCharacter = allCharacters[itemNum + ((page - 1) * 2)];
-            if (itemNum == 0)
-            {
-                if (visitedCharacters.Contains(currentCharacter))
-                {
-                    PopulateMenuItem0(currentCharacter);
-                }
-                else
-                {
-                    MenuItem0Blank();
-                }
-            }
+            PopulateMenuItem1(currentCharacter2);
 
-            if (itemNum == 1)
-            {
-                if (visitedCharacters.Contains(currentCharacter))
-                {
-
-                    PopulateMenuItem1(currentCharacter);
-                }
-                else
-                {
-                    MenuItem1Blank();
-                }
-            }
+        }
+        else
+        {
+            MenuItem1Blank();
 
         }
     }
+
 
     public int itemsListLength()
     {
@@ -153,6 +155,11 @@ public class GuestPanel : MonoBehaviour
             PictureSprite pictureSpriteToAdd = characterPictures.Find(p => p.pictureSpriteName == pictureName);
             pictureSpriteList.Add(pictureSpriteToAdd);
         }
+       
+        for (int currentPictureSpriteCount = pictureSpriteList.Count; currentPictureSpriteCount < 3; currentPictureSpriteCount++)
+        {
+            pictureSpriteList.Add(mysteryImage);
+        }
 
         menuItem0.SetCharacterPictures(pictureSpriteList);
     }
@@ -167,12 +174,18 @@ public class GuestPanel : MonoBehaviour
         menuItem1.SetAttractedItems(currentCharacter.ReturnCurrentItemAttractString());
 
         List<PictureSprite> pictureSpriteList = new List<PictureSprite>();
-        foreach(string pictureName in currentCharacter.picturesTakenNameForCharacter)
+        foreach (string pictureName in currentCharacter.picturesTakenNameForCharacter)
         {
             PictureSprite pictureSpriteToAdd = characterPictures.Find(p => p.pictureSpriteName == pictureName);
             pictureSpriteList.Add(pictureSpriteToAdd);
         }
-               
+
+      
+        for (int currentPictureSpriteCount = pictureSpriteList.Count; currentPictureSpriteCount < 3; currentPictureSpriteCount++)
+        {
+            pictureSpriteList.Add(mysteryImage);
+        }
+        
         menuItem1.SetCharacterPictures(pictureSpriteList);
     }
 
@@ -180,6 +193,12 @@ public class GuestPanel : MonoBehaviour
     {
         page++;
         ClearPreviousPageItems();
+        if(page==GetPageCount() && itemListRemainder() != 0)
+        {
+            menuItemToHide.SetActive(false);
+
+        }
+
         PopulateMenu();
     }
 
@@ -187,8 +206,12 @@ public class GuestPanel : MonoBehaviour
     {
         page--;
         ClearPreviousPageItems();
+        menuItemToHide.SetActive(true);
         PopulateMenu();
     }
+
+
+
 
 
 }
