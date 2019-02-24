@@ -22,6 +22,8 @@ public class PlayScreenManager : MonoBehaviour
     List<Character> VisitedCharacters;
     GameObject target1;
 
+    [SerializeField] AudioClip cameraSound;
+
 
     // Start is called before the first frame update
     void Start()
@@ -188,6 +190,17 @@ public class PlayScreenManager : MonoBehaviour
         string itemForPicture = gameStatus.setItem1.ItemName;
         string characterForPicture = characterToAdd.characterName;
         gameStatus.AddAPicture(characterForPicture, itemForPicture);
+        StartCoroutine(Flash(target1));
+        
+    }
+
+    private IEnumerator Flash(GameObject target)
+    {
+        GameObject thisTarget = target;
+        AudioSource.PlayClipAtPoint(cameraSound, Camera.main.transform.position);
+        thisTarget.GetComponent<Image>().color = new Color(0.990566f, 0.9625216f, 0.09812211f, 0.6901961f);
+        yield return new WaitForSeconds(.5f);
+        thisTarget.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.6901961f);
     }
 
 }

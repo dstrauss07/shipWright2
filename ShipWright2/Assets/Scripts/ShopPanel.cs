@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class ShopPanel : MonoBehaviour
 
@@ -14,7 +15,10 @@ public class ShopPanel : MonoBehaviour
     [SerializeField] List<TextMeshProUGUI> MenuItemCosts;
     [SerializeField] List<GameObject> MenuItemImages;
     [SerializeField] List<GameObject> menuItems;
+    [SerializeField] List<GameObject> MenuButtons;
     [SerializeField] TextMeshProUGUI pageText;
+    [SerializeField] GameObject purchasedIcon;
+
 
 
     int page = 1;
@@ -37,6 +41,8 @@ public class ShopPanel : MonoBehaviour
         pageText.text = page.ToString() + " Of " + GetPageCount().ToString();
     }
 
+
+
     private void PopulateItemList()
     {
 
@@ -44,19 +50,31 @@ public class ShopPanel : MonoBehaviour
         {
             for (int itemNum = 0; itemNum < 4; itemNum++)
             {
-                var currentItem = items[itemNum + ((page - 1) * 4)];
+                MenuButtons[itemNum].SetActive(true);
+                Item currentItem = items[itemNum + ((page - 1) * 4)];
                 string currentItemName = currentItem.ItemName;
                 string currentItemCost = currentItem.ItemCost.ToString();
                 var currentItemSprite = currentItem.GetComponent<SpriteRenderer>().sprite;
                 MenuItemNames[itemNum].text = currentItemName;
                 MenuItemCosts[itemNum].text = currentItemCost;
                 MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
+                Debug.Log("Checking item List");
+                if (gameStatus.gameItems.Contains(currentItem))
+                {
+                    Debug.Log(currentItem.ItemName + " was alread purchased!");
+                    Transform menuPurchasedSpot = menuItems[itemNum].transform;
+                    Vector3 purchaseItemPosition = new Vector3(menuPurchasedSpot.transform.position.x + 1.5f, menuPurchasedSpot.transform.position.y, menuPurchasedSpot.transform.position.z);
+                    Instantiate(purchasedIcon, purchaseItemPosition, Quaternion.identity);
+                    MenuButtons[itemNum].SetActive(false);
+                }
+
             }
         }
         else if (page == GetPageCount() && itemListRemainder() != 0)
         {
             for (int itemNum = 0; itemNum < itemListRemainder(); itemNum++)
             {
+                MenuButtons[itemNum].SetActive(true);
                 var currentItem = items[itemNum + ((page - 1) * 4)];
                 string currentItemName = currentItem.ItemName;
                 string currentItemCost = currentItem.ItemCost.ToString();
@@ -64,7 +82,15 @@ public class ShopPanel : MonoBehaviour
                 MenuItemNames[itemNum].text = currentItemName;
                 MenuItemCosts[itemNum].text = currentItemCost;
                 MenuItemImages[itemNum].GetComponent<Image>().sprite = currentItemSprite;
-                 }
+                if (gameStatus.gameItems.Contains(currentItem))
+                {
+                    Debug.Log(currentItem.ItemName + " was alread purchased!");
+                    Transform menuPurchasedSpot = menuItems[itemNum].transform;
+                    Vector3 purchaseItemPosition = new Vector3(menuPurchasedSpot.transform.position.x + 1.5f, menuPurchasedSpot.transform.position.y, menuPurchasedSpot.transform.position.z);
+                    Instantiate(purchasedIcon, purchaseItemPosition, Quaternion.identity);
+                    MenuButtons[itemNum].SetActive(false);
+                }
+            }
         }
     }
 
@@ -86,6 +112,15 @@ public class ShopPanel : MonoBehaviour
             }
         }
     }
+
+    private void DeletePurchasedImages()
+    {
+        foreach (GameObject objectToDestroy in GameObject.FindGameObjectsWithTag("puchasedIcon"))
+        {
+            Destroy(objectToDestroy);
+        }
+    }
+
 
 
     public int itemsListLength()
@@ -136,6 +171,7 @@ public class ShopPanel : MonoBehaviour
     {
         Debug.Log("Next Page!");
         page++;
+        DeletePurchasedImages();
         PopulateMenu();
     }
 
@@ -144,6 +180,7 @@ public class ShopPanel : MonoBehaviour
     {
         Debug.Log("Previus Page!");
         page--;
+        DeletePurchasedImages();
         PopulateMenu();
     }
 

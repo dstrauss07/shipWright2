@@ -8,17 +8,20 @@ public class StartScreenManager : MonoBehaviour
 {
     [SerializeField] public List<Item> allItemsToLoad;
     [SerializeField] public List<Character> allCharactersToLoad;
+    [SerializeField] public List<Character> recentVisitedCharacters;
+
 
     GameStatus gameStatus;
+    GameObject recentVisitorPanel;
     GameStatus.GameData loadedData;
     Item loadedSetItem1;
-     public DateTime lastSaveTimeInDateTime;
+    public DateTime lastSaveTimeInDateTime;
     public DateTime currentDateTime;
     Character characterToAdd;
     List<Character> visitedCharacters;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         gameStatus = FindObjectOfType<GameStatus>();
         loadedData = gameStatus.LoadGameData();
@@ -30,11 +33,19 @@ public class StartScreenManager : MonoBehaviour
         int NumberOfVisits = CalculateNumberOfVisitsSinceLastSave();
         AddCharactersSinceLastVisit(setItem1, NumberOfVisits);
 
+        recentVisitorPanel = FindObjectOfType<RecentVisitorsPanel>().gameObject;
+
+        if (recentVisitedCharacters.Count == 0 || recentVisitedCharacters==null)
+        {
+            Debug.Log("hiding Recent Visitors Panel");
+            recentVisitorPanel.SetActive(false);
+        }
+
     }
 
-    
 
-    
+
+
     private void LoadGameItems()
     {
 
@@ -88,6 +99,7 @@ public class StartScreenManager : MonoBehaviour
         for (int visitNum = 0; visitNum < NumberOfVisits; visitNum++)
         {
             characterToAdd = gameStatus.setItem1.GetAttractedCharacter();
+            AddToRecentCharacterVistors(characterToAdd);
             if (!visitedCharacters.Contains(characterToAdd))
             {
                 Debug.Log(characterToAdd.characterName + " has Appeared. Drawn by " + setItem1.ItemName);
@@ -111,8 +123,23 @@ public class StartScreenManager : MonoBehaviour
                 {
                     Debug.Log(characterToAdd.characterName + " has Appeared Again. Drawn by Old Item" + setItem1.ItemName);
                     gameStatus.AddToCharacterVisitsOnly(characterToAdd);
-                 }
+                }
             }
+        }
+    }
+
+    private void AddToRecentCharacterVistors(Character characterToAdd)
+    {
+        if (!recentVisitedCharacters.Contains(characterToAdd))
+        {
+            recentVisitedCharacters.Add(characterToAdd);
+        }
+        else
+        {
+            Character characterToUpdate = recentVisitedCharacters.Find(c => c.characterName == characterToAdd.characterName);
+            recentVisitedCharacters.Remove(characterToAdd);
+            characterToUpdate.NumberOfTimesVisited++;
+            recentVisitedCharacters.Add(characterToUpdate);
         }
     }
 }

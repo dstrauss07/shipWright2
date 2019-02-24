@@ -8,8 +8,8 @@ using System.IO;
 public class GameStatus : MonoBehaviour
 {
     [Header("Constant Values to Be Reloaded")]
-    [SerializeField] List<Item> gameItems;
-    [SerializeField] List<Character> visitingCharacters;
+    [SerializeField] public List<Item> gameItems;
+    [SerializeField] public List<Character> visitingCharacters;
     [SerializeField] public Item setItem1;
     [SerializeField] List<string> picturesTakenNames;
 
@@ -23,7 +23,7 @@ public class GameStatus : MonoBehaviour
     [Header("Times to Wait Between Loads")]
     [SerializeField] float characterWaitTime = 5f;
     [SerializeField] float timeBeforeRemove = 15f;
-    [SerializeField] public int timeBetweenVisitsWhenAway = 5;
+    [SerializeField] public int timeBetweenVisitsWhenAway = 1;
 
 
 
