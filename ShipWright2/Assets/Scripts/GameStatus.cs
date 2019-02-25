@@ -11,18 +11,20 @@ public class GameStatus : MonoBehaviour
     [SerializeField] public List<Item> gameItems;
     [SerializeField] public List<Character> visitingCharacters;
     [SerializeField] public Item setItem1;
+    [SerializeField] public Item setItem2;
+    [SerializeField] public Item setItem3;
     [SerializeField] List<string> picturesTakenNames;
 
     [Header("Game Screen Setters")]
     public bool setModeActive = false;
     public bool pictureModeActive = false;
-    Item itemToSet;
+    public Item itemToSet;
 
 
 
     [Header("Times to Wait Between Loads")]
-    [SerializeField] float characterWaitTime = 5f;
-    [SerializeField] float timeBeforeRemove = 15f;
+    [SerializeField] public float characterWaitTime = 5f;
+    [SerializeField] float timeBeforeRemove = 50f;
     [SerializeField] public int timeBetweenVisitsWhenAway = 1;
 
 
@@ -148,39 +150,37 @@ public class GameStatus : MonoBehaviour
         }
     }
 
-
-
-
-    public void AddToGameItems(Item item)
-    {
-        gameItems.Add(item);
-    }
-
     public List<Item> ListGameItems()
     {
         return gameItems;
     }
-
+    
+    public void AddToGameItems(Item item)
+    {
+        gameItems.Add(item);
+    }
+        
     public void SetGameItemToSet(Item item)
     {
         itemToSet = item;
+        itemToSet.itemIsInGameScreen = true;
     }
-
-    public Item getItemToSet()
-    {
-        return itemToSet;
-    }
-
-
+       
     public void SetItem1(Item item)
     {
         setItem1 = item;
     }
 
-    public Item getSetItem1()
+    public void SetItem2(Item item)
     {
-        return setItem1;
+        setItem2 = item;
     }
+
+    public void SetItem3(Item item)
+    {
+        setItem3 = item;
+    }
+
 
     public void AddToVisitedCharacters(Character visitedCharacter)
     {
