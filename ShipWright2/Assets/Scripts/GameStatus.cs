@@ -23,8 +23,10 @@ public class GameStatus : MonoBehaviour
 
 
     [Header("Times to Wait Between Loads")]
-    [SerializeField] public float characterWaitTime = 5f;
-    [SerializeField] float timeBeforeRemove = 50f;
+    [SerializeField] public float characterWaitMinTime = 3f;
+    [SerializeField] public float characterWaitMaxTime = 15f;
+    [SerializeField] public float timeBeforeRemoveMin = 5f;
+    [SerializeField] public float timeBeforeRemoveMax = 20f;
     [SerializeField] public int timeBetweenVisitsWhenAway = 1;
 
 
@@ -55,6 +57,8 @@ public class GameStatus : MonoBehaviour
     {
         public List<string> PurchasedItems;
         public string setItem1Name;
+        public string setItem2Name;
+        public string setItem3Name;
         public List<string> picturesTaken;
         public List<visitingCharactersToSerialize> visitingCharacters;
         public string lastSaveTime;
@@ -81,6 +85,8 @@ public class GameStatus : MonoBehaviour
 
         GameData data = new GameData();
         if (setItem1 != null) { data.setItem1Name = setItem1.ItemName; }
+        if (setItem2 != null) { data.setItem2Name = setItem2.ItemName; }
+        if (setItem3 != null) { data.setItem3Name = setItem3.ItemName; }
         data.PurchasedItems = new List<string>();
 
         for (int itemNum = 0; itemNum < gameItems.Count; itemNum++)
@@ -213,12 +219,8 @@ public class GameStatus : MonoBehaviour
 
     public float GetTimeBeforeRemove()
     {
+        float timeBeforeRemove = UnityEngine.Random.Range(timeBeforeRemoveMin, timeBeforeRemoveMax);
         return timeBeforeRemove;
-    }
-
-    public float GetTimeBeforeSpawn()
-    {
-        return characterWaitTime;
     }
 
 
@@ -228,7 +230,9 @@ public class GameStatus : MonoBehaviour
         {
             picturesTakenNames.Add(characterName + itemName);
             Character characterToAddPicture = visitingCharacters.Find(c => c.characterName == characterName);
-            characterToAddPicture.picturesTakenNameForCharacter.Add(characterName + itemName);
+            if(!characterToAddPicture.picturesTakenNameForCharacter.Contains(characterName + itemName))
+            { characterToAddPicture.picturesTakenNameForCharacter.Add(characterName + itemName); }
+           
             Save();
         }
     }
@@ -236,6 +240,12 @@ public class GameStatus : MonoBehaviour
     public void AddAPicture(string pictureTakenName)
     {
         picturesTakenNames.Add(pictureTakenName);
+    }
+
+    public void QuitGame()
+    {
+        Save();
+        Application.Quit();
     }
 
 

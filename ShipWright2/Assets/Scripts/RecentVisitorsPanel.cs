@@ -50,7 +50,7 @@ public class RecentVisitorsPanel : MonoBehaviour
                 Debug.Log("final page # " + page + "itemNum" + itemNum);
                 var currentCharacter = recentVisitedCharacters[itemNum + ((page - 1) * 4)];
                 string currentCharacterName = currentCharacter.characterName;
-                string currentCharacterVisits = currentCharacter.NumberOfTimesVisited.ToString();
+                string currentCharacterVisits = currentCharacter.RecentVisits.ToString();
                 var currentCharacterSprite = currentCharacter.GetComponent<SpriteRenderer>().sprite;
                 MenuItemNames[itemNum].text = currentCharacterName;
                 MenuItemImages[itemNum].GetComponent<Image>().sprite = currentCharacterSprite;
@@ -65,7 +65,7 @@ public class RecentVisitorsPanel : MonoBehaviour
                 Debug.Log("final page # " + page + "itemNum" + itemNum);
                 var currentCharacter = recentVisitedCharacters[itemNum + ((page - 1) * 4)];
                 string currentCharacterName = currentCharacter.characterName;
-                string currentCharacterVisits = currentCharacter.NumberOfTimesVisited.ToString();
+                string currentCharacterVisits = currentCharacter.RecentVisits.ToString();
                 var currentCharacterSprite = currentCharacter.GetComponent<SpriteRenderer>().sprite;
                 MenuItemNames[itemNum].text = currentCharacterName;
                 MenuItemImages[itemNum].GetComponent<Image>().sprite = currentCharacterSprite;

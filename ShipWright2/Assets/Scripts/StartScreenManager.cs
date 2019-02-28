@@ -15,6 +15,8 @@ public class StartScreenManager : MonoBehaviour
     GameObject recentVisitorPanel;
     GameStatus.GameData loadedData;
     Item loadedSetItem1;
+    Item loadedSetItem2;
+    Item loadedSetItem3;
     public DateTime lastSaveTimeInDateTime;
     public DateTime currentDateTime;
     Character characterToAdd;
@@ -26,33 +28,48 @@ public class StartScreenManager : MonoBehaviour
         gameStatus = FindObjectOfType<GameStatus>();
         loadedData = gameStatus.LoadGameData();
         visitedCharacters = gameStatus.GetListVisitingCharacters();
-
         LoadGameItems();
         Item setItem1 = gameStatus.setItem1;
-
+        Item setItem2 = gameStatus.setItem2;
+        Item setItem3 = gameStatus.setItem3;
+        
+        recentVisitedCharacters = new List<Character>();
         int NumberOfVisits = CalculateNumberOfVisitsSinceLastSave();
-        AddCharactersSinceLastVisit(setItem1, NumberOfVisits);
+        if (setItem1 != null)
+        { AddCharactersSinceLastVisit1(setItem1, NumberOfVisits); }
+        if (setItem2 != null)
+        { AddCharactersSinceLastVisit2(setItem2, NumberOfVisits); }
+        if (setItem3 != null)
+        { AddCharactersSinceLastVisit3(setItem3, NumberOfVisits); }
+        gameStatus.Save();
+    }
 
-        recentVisitorPanel = FindObjectOfType<RecentVisitorsPanel>().gameObject;
 
-        if (recentVisitedCharacters.Count == 0 || recentVisitedCharacters==null)
+    private void Start()
+    {
+        if (recentVisitedCharacters.Count == 0 || recentVisitedCharacters == null)
         {
-            Debug.Log("hiding Recent Visitors Panel");
-            recentVisitorPanel.SetActive(false);
+           GameObject.Find("VisitedPanel").SetActive(false);
+            GameObject.Find("VisitedPanel2").SetActive(true);
+        }
+        else
+        {
+            GameObject.Find("VisitedPanel").SetActive(true);
+            GameObject.Find("VisitedPanel2").SetActive(false);
         }
 
     }
 
 
 
-
     private void LoadGameItems()
     {
-
         loadedSetItem1 = allItemsToLoad.Find(item => item.ItemName == loadedData.setItem1Name);
+        loadedSetItem2 = allItemsToLoad.Find(item => item.ItemName == loadedData.setItem2Name);
+        loadedSetItem3 = allItemsToLoad.Find(item => item.ItemName == loadedData.setItem3Name);
         gameStatus.SetItem1(loadedSetItem1);
-
-
+        gameStatus.SetItem2(loadedSetItem2);
+        gameStatus.SetItem3(loadedSetItem3);
         foreach (string purchasedItem in loadedData.PurchasedItems)
         {
             Item itemToAdd = allItemsToLoad.Find(item => item.ItemName == purchasedItem);
@@ -76,6 +93,14 @@ public class StartScreenManager : MonoBehaviour
                 characterToLoad.AddToItemsAttractedBy(attractedItemToLoad);
             }
 
+            characterToLoad.picturesTakenNameForCharacter.Clear();
+            foreach (string pictureNamesForCharacter in visitedCharacter.picturesTakenNamesForCharacter)
+            {
+
+                characterToLoad.picturesTakenNameForCharacter.Add(pictureNamesForCharacter);
+
+            }
+
             gameStatus.AddToVisitedCharacters(characterToLoad);
         }
     }
@@ -94,21 +119,20 @@ public class StartScreenManager : MonoBehaviour
         return NumberOfVisits;
     }
 
-    private void AddCharactersSinceLastVisit(Item setItem1, int NumberOfVisits)
+    private void AddCharactersSinceLastVisit1(Item setItem1, int NumberOfVisits)
     {
         for (int visitNum = 0; visitNum < NumberOfVisits; visitNum++)
         {
             characterToAdd = gameStatus.setItem1.GetAttractedCharacter();
+            ++characterToAdd.RecentVisits;
             AddToRecentCharacterVistors(characterToAdd);
             if (!visitedCharacters.Contains(characterToAdd))
             {
-                Debug.Log(characterToAdd.characterName + " has Appeared. Drawn by " + setItem1.ItemName);
                 characterToAdd.AddToItemsAttractedBy(setItem1);
                 characterToAdd.AddToVisits();
                 characterToAdd.lastVisitDateTimeString = DateTime.Now.ToString();
                 gameStatus.AddToVisitedCharacters(characterToAdd);
-                gameStatus.Save();
-            }
+                        }
             else if (visitedCharacters.Contains(characterToAdd))
             {
                 Character CharacterToUpdate = visitedCharacters.Find(c => c.characterName == characterToAdd.characterName);
@@ -117,11 +141,76 @@ public class StartScreenManager : MonoBehaviour
                 {
                     Debug.Log(characterToAdd.characterName + " has Appeared Again. Drawn by New Item" + setItem1.ItemName);
                     gameStatus.AddItemToVisitedCharacter(characterToAdd, setItem1);
-                    gameStatus.Save();
-                }
+                      }
                 else if (ItemListToCheck.Contains(setItem1.ItemName))
                 {
                     Debug.Log(characterToAdd.characterName + " has Appeared Again. Drawn by Old Item" + setItem1.ItemName);
+                    gameStatus.AddToCharacterVisitsOnly(characterToAdd);
+                }
+            }
+        }
+    }
+
+    private void AddCharactersSinceLastVisit2(Item setItem2, int NumberOfVisits)
+    {
+        for (int visitNum = 0; visitNum < NumberOfVisits; visitNum++)
+        {
+            characterToAdd = gameStatus.setItem2.GetAttractedCharacter();
+            ++characterToAdd.RecentVisits;
+            AddToRecentCharacterVistors(characterToAdd);
+            if (!visitedCharacters.Contains(characterToAdd))
+            {
+                Debug.Log(characterToAdd.characterName + " has Appeared. Drawn by " + setItem2.ItemName);
+                characterToAdd.AddToItemsAttractedBy(setItem2);
+                characterToAdd.AddToVisits();
+                characterToAdd.lastVisitDateTimeString = DateTime.Now.ToString();
+                gameStatus.AddToVisitedCharacters(characterToAdd);
+               }
+            else if (visitedCharacters.Contains(characterToAdd))
+            {
+                Character CharacterToUpdate = visitedCharacters.Find(c => c.characterName == characterToAdd.characterName);
+                List<string> ItemListToCheck = CharacterToUpdate.ReturnItemNames();
+                if (!ItemListToCheck.Contains(setItem2.ItemName))
+                {
+                    Debug.Log(characterToAdd.characterName + " has Appeared Again. Drawn by New Item" + setItem2.ItemName);
+                    gameStatus.AddItemToVisitedCharacter(characterToAdd, setItem2);
+                     }
+                else if (ItemListToCheck.Contains(setItem2.ItemName))
+                {
+                    Debug.Log(characterToAdd.characterName + " has Appeared Again. Drawn by Old Item" + setItem2.ItemName);
+                    gameStatus.AddToCharacterVisitsOnly(characterToAdd);
+                }
+            }
+        }
+    }
+
+    private void AddCharactersSinceLastVisit3(Item setItem3, int NumberOfVisits)
+    {
+        for (int visitNum = 0; visitNum < NumberOfVisits; visitNum++)
+        {
+            characterToAdd = gameStatus.setItem3.GetAttractedCharacter();
+            ++characterToAdd.RecentVisits;
+            AddToRecentCharacterVistors(characterToAdd);
+            if (!visitedCharacters.Contains(characterToAdd))
+            {
+                Debug.Log(characterToAdd.characterName + " has Appeared. Drawn by " + setItem3.ItemName);
+                characterToAdd.AddToItemsAttractedBy(setItem3);
+                characterToAdd.AddToVisits();
+                characterToAdd.lastVisitDateTimeString = DateTime.Now.ToString();
+                gameStatus.AddToVisitedCharacters(characterToAdd);
+               }
+            else if (visitedCharacters.Contains(characterToAdd))
+            {
+                Character CharacterToUpdate = visitedCharacters.Find(c => c.characterName == characterToAdd.characterName);
+                List<string> ItemListToCheck = CharacterToUpdate.ReturnItemNames();
+                if (!ItemListToCheck.Contains(setItem3.ItemName))
+                {
+                    Debug.Log(characterToAdd.characterName + " has Appeared Again. Drawn by New Item" + setItem3.ItemName);
+                    gameStatus.AddItemToVisitedCharacter(characterToAdd, setItem3);
+                }
+                else if (ItemListToCheck.Contains(setItem3.ItemName))
+                {
+                    Debug.Log(characterToAdd.characterName + " has Appeared Again. Drawn by Old Item" + setItem3.ItemName);
                     gameStatus.AddToCharacterVisitsOnly(characterToAdd);
                 }
             }

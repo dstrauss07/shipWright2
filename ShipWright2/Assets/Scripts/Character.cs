@@ -13,6 +13,7 @@ public class Character : MonoBehaviour
     public List<string> ItemListNamesToReturn;
     public string lastVisitDateTimeString;
     public List<string> picturesTakenNameForCharacter;
+    public int RecentVisits;
     [SerializeField] public Sprite characterSprite;
 
 
